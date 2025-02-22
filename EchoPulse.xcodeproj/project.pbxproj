@@ -6,14 +6,73 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		FAB92F732D6A8247005B7645 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FAB92F722D6A8247005B7645 /* WidgetKit.framework */; };
+		FAB92F752D6A8247005B7645 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FAB92F742D6A8247005B7645 /* SwiftUI.framework */; };
+		FAB92F822D6A8247005B7645 /* CompetitionExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = FAB92F702D6A8247005B7645 /* CompetitionExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		FAB92F802D6A8247005B7645 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FAB92F532D6A81F5005B7645 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = FAB92F6F2D6A8247005B7645;
+			remoteInfo = CompetitionExtension;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		FAB92F872D6A8247005B7645 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				FAB92F822D6A8247005B7645 /* CompetitionExtension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		FAB92F5B2D6A81F5005B7645 /* EchoPulse.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EchoPulse.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		FAB92F702D6A8247005B7645 /* CompetitionExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = CompetitionExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		FAB92F722D6A8247005B7645 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
+		FAB92F742D6A8247005B7645 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		FAB92F832D6A8247005B7645 /* Exceptions for "Competition" folder in "CompetitionExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = FAB92F6F2D6A8247005B7645 /* CompetitionExtension */;
+		};
+		FAB92F892D6A8334005B7645 /* Exceptions for "Competition" folder in "EchoPulse" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				CompetitionLiveActivity.swift,
+			);
+			target = FAB92F5A2D6A81F5005B7645 /* EchoPulse */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		FAB92F5D2D6A81F5005B7645 /* EchoPulse */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = EchoPulse;
+			sourceTree = "<group>";
+		};
+		FAB92F762D6A8247005B7645 /* Competition */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				FAB92F892D6A8334005B7645 /* Exceptions for "Competition" folder in "EchoPulse" target */,
+				FAB92F832D6A8247005B7645 /* Exceptions for "Competition" folder in "CompetitionExtension" target */,
+			);
+			path = Competition;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -26,6 +85,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		FAB92F6D2D6A8247005B7645 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FAB92F752D6A8247005B7645 /* SwiftUI.framework in Frameworks */,
+				FAB92F732D6A8247005B7645 /* WidgetKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -33,6 +101,8 @@
 			isa = PBXGroup;
 			children = (
 				FAB92F5D2D6A81F5005B7645 /* EchoPulse */,
+				FAB92F762D6A8247005B7645 /* Competition */,
+				FAB92F712D6A8247005B7645 /* Frameworks */,
 				FAB92F5C2D6A81F5005B7645 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -41,8 +111,18 @@
 			isa = PBXGroup;
 			children = (
 				FAB92F5B2D6A81F5005B7645 /* EchoPulse.app */,
+				FAB92F702D6A8247005B7645 /* CompetitionExtension.appex */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		FAB92F712D6A8247005B7645 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				FAB92F722D6A8247005B7645 /* WidgetKit.framework */,
+				FAB92F742D6A8247005B7645 /* SwiftUI.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -55,10 +135,12 @@
 				FAB92F572D6A81F5005B7645 /* Sources */,
 				FAB92F582D6A81F5005B7645 /* Frameworks */,
 				FAB92F592D6A81F5005B7645 /* Resources */,
+				FAB92F872D6A8247005B7645 /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				FAB92F812D6A8247005B7645 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				FAB92F5D2D6A81F5005B7645 /* EchoPulse */,
@@ -69,6 +151,28 @@
 			productName = EchoPulse;
 			productReference = FAB92F5B2D6A81F5005B7645 /* EchoPulse.app */;
 			productType = "com.apple.product-type.application";
+		};
+		FAB92F6F2D6A8247005B7645 /* CompetitionExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FAB92F842D6A8247005B7645 /* Build configuration list for PBXNativeTarget "CompetitionExtension" */;
+			buildPhases = (
+				FAB92F6C2D6A8247005B7645 /* Sources */,
+				FAB92F6D2D6A8247005B7645 /* Frameworks */,
+				FAB92F6E2D6A8247005B7645 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				FAB92F762D6A8247005B7645 /* Competition */,
+			);
+			name = CompetitionExtension;
+			packageProductDependencies = (
+			);
+			productName = CompetitionExtension;
+			productReference = FAB92F702D6A8247005B7645 /* CompetitionExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
 		};
 /* End PBXNativeTarget section */
 
@@ -81,6 +185,9 @@
 				LastUpgradeCheck = 1620;
 				TargetAttributes = {
 					FAB92F5A2D6A81F5005B7645 = {
+						CreatedOnToolsVersion = 16.2;
+					};
+					FAB92F6F2D6A8247005B7645 = {
 						CreatedOnToolsVersion = 16.2;
 					};
 				};
@@ -100,12 +207,20 @@
 			projectRoot = "";
 			targets = (
 				FAB92F5A2D6A81F5005B7645 /* EchoPulse */,
+				FAB92F6F2D6A8247005B7645 /* CompetitionExtension */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
 		FAB92F592D6A81F5005B7645 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FAB92F6E2D6A8247005B7645 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -122,7 +237,22 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		FAB92F6C2D6A8247005B7645 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		FAB92F812D6A8247005B7645 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = FAB92F6F2D6A8247005B7645 /* CompetitionExtension */;
+			targetProxy = FAB92F802D6A8247005B7645 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		FAB92F672D6A81F6005B7645 /* Debug */ = {
@@ -255,6 +385,7 @@
 				DEVELOPMENT_TEAM = NA9G8MDBHJ;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSSupportsLiveActivities = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -284,6 +415,7 @@
 				DEVELOPMENT_TEAM = NA9G8MDBHJ;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSSupportsLiveActivities = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -296,6 +428,60 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = net.dickhans.EchoPulse;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		FAB92F852D6A8247005B7645 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = NA9G8MDBHJ;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Competition/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Competition;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = net.dickhans.EchoPulse.Competition;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		FAB92F862D6A8247005B7645 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = NA9G8MDBHJ;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Competition/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Competition;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = net.dickhans.EchoPulse.Competition;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -319,6 +505,15 @@
 			buildConfigurations = (
 				FAB92F6A2D6A81F6005B7645 /* Debug */,
 				FAB92F6B2D6A81F6005B7645 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		FAB92F842D6A8247005B7645 /* Build configuration list for PBXNativeTarget "CompetitionExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FAB92F852D6A8247005B7645 /* Debug */,
+				FAB92F862D6A8247005B7645 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
