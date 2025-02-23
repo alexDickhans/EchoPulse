@@ -17,8 +17,8 @@ struct MinimalMatchView: View {
         Text(match.name)
             .foregroundStyle(textColor, Color.black)
             .font(.system(size: 20, weight: .bold))
-            .minimumScaleFactor(0.5) // Ensures small text scales down instead of truncating
-            .lineLimit(1)
+            .minimumScaleFactor(0.4)
+            .lineLimit(2).multilineTextAlignment(TextAlignment.center)
     }
     
     init(match: CompetitionAttributes.Match) {

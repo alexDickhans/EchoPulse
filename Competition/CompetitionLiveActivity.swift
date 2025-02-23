@@ -21,6 +21,9 @@ struct CompetitionLiveActivity: Widget {
                 DynamicIslandExpandedRegion(.leading) {
                     Text("Leading")
                 }
+                DynamicIslandExpandedRegion(.center) {
+                    Ranking(rank: 1, num: 80)
+                }
                 DynamicIslandExpandedRegion(.trailing) {
                     Text("Trailing")
                 }
@@ -29,9 +32,13 @@ struct CompetitionLiveActivity: Widget {
                     // more content
                 }
             } compactLeading: {
-                Text("L")
+                if let match = context.state.lastMatch {
+                    MinimalMatchView(match: match)
+                }
             } compactTrailing: {
-                Text("T")
+                if let match = context.state.teamNextMatch {
+                    MinimalMatchView(match: match)
+                }
             } minimal: {
                 if let match = context.state.lastMatch {
                     MinimalMatchView(match: match)
@@ -51,11 +58,11 @@ extension CompetitionAttributes {
 
 extension CompetitionAttributes.ContentState {
     static var smiley: CompetitionAttributes.ContentState {
-        CompetitionAttributes.ContentState(lastMatch: CompetitionAttributes.Match(name: "Q1", scored: true, scheduled: Date().addingTimeInterval(-60 * 2), startTime: Date(), redAlliance: CompetitionAttributes.Alliance(team1: "2654E", team2: "2145Z", score: 22), blueAlliance: CompetitionAttributes.Alliance(team1: "ABS", team2: "ABCD", score: 44)), nextMatch: CompetitionAttributes.Match(name: "Q2", scored: true, scheduled: Date().addingTimeInterval(-60 * 2), startTime: Date(), redAlliance: CompetitionAttributes.Alliance(team1: "2654E", team2: "2145Z", score: nil), blueAlliance: CompetitionAttributes.Alliance(team1: "ABS", team2: "ABCD", score: nil)), teamNextMatch: CompetitionAttributes.Match(name: "Q4", scored: true, scheduled: Date().addingTimeInterval(-60 * 2), startTime: Date(), redAlliance: CompetitionAttributes.Alliance(team1: "2654E", team2: "2145Z", score: nil), blueAlliance: CompetitionAttributes.Alliance(team1: "ABS", team2: "ABCD", score: nil)))
+        CompetitionAttributes.ContentState(lastMatch: CompetitionAttributes.Match(name: "R16 1-1", scored: true, scheduled: Date().addingTimeInterval(-60 * 2), startTime: Date(), redAlliance: CompetitionAttributes.Alliance(team1: "2654E", team2: "2145Z", score: 22), blueAlliance: CompetitionAttributes.Alliance(team1: "ABS", team2: "ABCD", score: 44)), nextMatch: CompetitionAttributes.Match(name: "Q2", scored: true, scheduled: Date().addingTimeInterval(-60 * 2), startTime: nil, redAlliance: CompetitionAttributes.Alliance(team1: "2654E", team2: "2145Z", score: nil), blueAlliance: CompetitionAttributes.Alliance(team1: "ABS", team2: "ABCD", score: nil)), teamNextMatch: CompetitionAttributes.Match(name: "Q4", scored: true, scheduled: Date().addingTimeInterval(-60 * 2), startTime: nil, redAlliance: CompetitionAttributes.Alliance(team1: "2654E", team2: "2145Z", score: nil), blueAlliance: CompetitionAttributes.Alliance(team1: "ABS", team2: "ABCD", score: nil)))
     }
 }
 
-#Preview("Notification", as: .content, using: CompetitionAttributes.preview) {
+#Preview("Live Activity", as: .content, using: CompetitionAttributes.preview) {
     CompetitionLiveActivity()
 } contentStates: {
     CompetitionAttributes.ContentState.smiley

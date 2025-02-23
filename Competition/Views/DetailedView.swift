@@ -13,17 +13,17 @@ struct DetailedView: View {
     let teamNextMatch: CompetitionAttributes.Match?
 
     var body: some View {
-        VStack {
+        VStack (spacing: 0) {
             if let match = lastMatch {
-                MatchView(match: match)
+                MatchView(match: match, longName: "Last Match")
             }
-            if let match = nextMatch {
-                MatchView(match: match)
-            }
+//            if let match = nextMatch {
+//                MatchView(match: match)
+//            }
             if let match = teamNextMatch {
-                MatchView(match: match)
+                MatchView(match: match, longName: "Next Up")
             }
-        }
+        }.padding(EdgeInsets(top: 30, leading: 20, bottom: 30, trailing: 20))
     }
 }
 

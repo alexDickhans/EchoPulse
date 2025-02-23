@@ -29,7 +29,7 @@ struct ContentView: View {
     func startActivity() {
         let attributes = CompetitionAttributes.preview
         let state = ActivityContent(
-            state: CompetitionAttributes.ContentState.smiley, staleDate: nil)
+            state: CompetitionAttributes.ContentState.smiley, staleDate: Date().addingTimeInterval(60))
 
         do {
             activity = try Activity<CompetitionAttributes>.request(
