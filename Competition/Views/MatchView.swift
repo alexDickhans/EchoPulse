@@ -9,7 +9,8 @@ import SwiftUI
 
 struct MatchView: View {
     let match: CompetitionAttributes.Match
-
+    private let winner: Winner
+    
     var body: some View {
         HStack {
             Group {
@@ -23,7 +24,7 @@ struct MatchView: View {
                 }
                 
                 if let score = match.redAlliance.score {
-                    Text(score.codingKey.stringValue).font(.system(size: 25))
+                    Text(score.codingKey.stringValue).font(.system(size: 25)).underline(winner == Winner.red)
                 }
             }.foregroundStyle(Color.red, Color.black)
             
@@ -31,7 +32,7 @@ struct MatchView: View {
             
             Group {
                 if let score = match.blueAlliance.score {
-                    Text(score.codingKey.stringValue).font(.system(size: 25))
+                    Text(score.codingKey.stringValue).font(.system(size: 25)).underline(winner == Winner.blue)
                 }
                 
                 VStack {
@@ -44,6 +45,28 @@ struct MatchView: View {
                 }
             }.foregroundStyle(Color.blue, Color.black)
         }
+    }
+    
+    public init(match: CompetitionAttributes.Match) {
+        self.match = match
+        
+        if let redScore = match.redAlliance.score, let blueScore = match.blueAlliance.score {
+            if (redScore > blueScore) {
+                winner = Winner.red
+            } else if (redScore < blueScore) {
+                winner = Winner.blue
+            } else {
+                winner = Winner.neither
+            }
+        } else {
+            winner = Winner.neither
+        }
+    }
+    
+    private enum Winner {
+        case red
+        case blue
+        case neither
     }
 }
 
