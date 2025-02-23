@@ -54,7 +54,11 @@
 		FAB92F892D6A8334005B7645 /* Exceptions for "Competition" folder in "EchoPulse" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				CompetitionAttributes.swift,
 				CompetitionLiveActivity.swift,
+				Views/DetailedView.swift,
+				Views/MatchView.swift,
+				Views/MinimalMatchView.swift,
 			);
 			target = FAB92F5A2D6A81F5005B7645 /* EchoPulse */;
 		};

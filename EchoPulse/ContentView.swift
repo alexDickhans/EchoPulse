@@ -8,6 +8,8 @@
 import ActivityKit
 import SwiftUI
 
+// IMPORTANT: LIVE VIEW CAN ONLY SAY ON SCREEN FOR 8 HOURS
+
 struct ContentView: View {
     @State var activity: Activity<CompetitionAttributes>?
 
@@ -15,6 +17,11 @@ struct ContentView: View {
         VStack {
             Button("Start Activity") {
                 startActivity()
+            }
+            Button("Stop Activity") {
+                Task {
+                    await stopActivity()
+                }
             }
         }.buttonStyle(.borderedProminent).controlSize(.large)
     }
@@ -30,7 +37,13 @@ struct ContentView: View {
         } catch {
             print(error.localizedDescription)
         }
+    }
 
+    func stopActivity() async {
+        await activity?.end(
+            ActivityContent(
+                state: CompetitionAttributes.ContentState.smiley, staleDate: nil
+            ), dismissalPolicy: ActivityUIDismissalPolicy.immediate)
     }
 }
 

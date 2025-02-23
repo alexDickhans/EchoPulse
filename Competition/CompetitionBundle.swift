@@ -11,7 +11,6 @@ import SwiftUI
 @main
 struct CompetitionBundle: WidgetBundle {
     var body: some Widget {
-        Competition()
         CompetitionLiveActivity()
     }
 }

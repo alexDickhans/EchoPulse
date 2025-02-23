@@ -9,26 +9,11 @@ import ActivityKit
 import SwiftUI
 import WidgetKit
 
-struct CompetitionAttributes: ActivityAttributes {
-    public struct ContentState: Codable, Hashable {
-        // Dynamic stateful properties about your activity go here!
-        var emoji: String
-    }
-
-    // Fixed non-changing properties about your activity go here!
-    var name: String
-}
-
 struct CompetitionLiveActivity: Widget {
     var body: some WidgetConfiguration {
         ActivityConfiguration(for: CompetitionAttributes.self) { context in
             // Lock screen/banner UI goes here
-            VStack {
-                Text("Hello \(context.state.emoji)")
-            }
-            .activityBackgroundTint(Color.cyan)
-            .activitySystemActionForegroundColor(Color.black)
-
+            DetailedView(lastMatch: context.state.lastMatch, nextMatch: context.state.nextMatch, teamNextMatch: context.state.teamNextMatch)
         } dynamicIsland: { context in
             DynamicIsland {
                 // Expanded UI goes here.  Compose the expanded UI through
@@ -40,15 +25,17 @@ struct CompetitionLiveActivity: Widget {
                     Text("Trailing")
                 }
                 DynamicIslandExpandedRegion(.bottom) {
-                    Text("Bottom \(context.state.emoji)")
+                    Text("Bottom")
                     // more content
                 }
             } compactLeading: {
                 Text("L")
             } compactTrailing: {
-                Text("T \(context.state.emoji)")
+                Text("T")
             } minimal: {
-                Text(context.state.emoji)
+                if let match = context.state.lastMatch {
+                    MinimalMatchView(match: match)
+                }
             }
             .widgetURL(URL(string: "http://www.apple.com"))
             .keylineTint(Color.red)
@@ -58,17 +45,13 @@ struct CompetitionLiveActivity: Widget {
 
 extension CompetitionAttributes {
     static var preview: CompetitionAttributes {
-        CompetitionAttributes(name: "World")
+        CompetitionAttributes(name: "World", division: Division(name: "Science"))
     }
 }
 
 extension CompetitionAttributes.ContentState {
     static var smiley: CompetitionAttributes.ContentState {
-        CompetitionAttributes.ContentState(emoji: "😀")
-    }
-
-    static var starEyes: CompetitionAttributes.ContentState {
-        CompetitionAttributes.ContentState(emoji: "🤩")
+        CompetitionAttributes.ContentState(lastMatch: CompetitionAttributes.Match(name: "Q1", scored: true, scheduled: Date().addingTimeInterval(-60 * 2), startTime: Date(), redAlliance: CompetitionAttributes.Alliance(team1: "2654E", team2: "2145Z", score: 22), blueAlliance: CompetitionAttributes.Alliance(team1: "ABS", team2: "ABCD", score: 44)), nextMatch: CompetitionAttributes.Match(name: "Q2", scored: true, scheduled: Date().addingTimeInterval(-60 * 2), startTime: Date(), redAlliance: CompetitionAttributes.Alliance(team1: "2654E", team2: "2145Z", score: nil), blueAlliance: CompetitionAttributes.Alliance(team1: "ABS", team2: "ABCD", score: nil)), teamNextMatch: CompetitionAttributes.Match(name: "Q4", scored: true, scheduled: Date().addingTimeInterval(-60 * 2), startTime: Date(), redAlliance: CompetitionAttributes.Alliance(team1: "2654E", team2: "2145Z", score: nil), blueAlliance: CompetitionAttributes.Alliance(team1: "ABS", team2: "ABCD", score: nil)))
     }
 }
 
@@ -76,5 +59,4 @@ extension CompetitionAttributes.ContentState {
     CompetitionLiveActivity()
 } contentStates: {
     CompetitionAttributes.ContentState.smiley
-    CompetitionAttributes.ContentState.starEyes
 }
