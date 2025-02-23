@@ -32,10 +32,6 @@ struct CompetitionAttributes: ActivityAttributes {
     }
 
     public let name: String
-    public let division: Division
-}
-
-public struct Division: Codable, Hashable {
-    public let name: String
+    public let division: String
 }
 

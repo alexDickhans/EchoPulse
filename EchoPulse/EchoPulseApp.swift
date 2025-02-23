@@ -7,6 +7,8 @@
 
 import SwiftUI
 
+let API = RoboScoutAPI()
+
 @main
 struct EchoPulseApp: App {
     var body: some Scene {

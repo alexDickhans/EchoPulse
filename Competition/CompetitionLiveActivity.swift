@@ -57,7 +57,7 @@ struct CompetitionLiveActivity: Widget {
 
 extension CompetitionAttributes {
     static var preview: CompetitionAttributes {
-        CompetitionAttributes(name: "World", division: Division(name: "Science"))
+        CompetitionAttributes(name: "World", division: "Science")
     }
 }
 

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		FA37FF6D2D6B8850008D3E52 /* Matft in Frameworks */ = {isa = PBXBuildFile; productRef = FA37FF6C2D6B8850008D3E52 /* Matft */; };
 		FAB92F732D6A8247005B7645 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FAB92F722D6A8247005B7645 /* WidgetKit.framework */; };
 		FAB92F752D6A8247005B7645 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FAB92F742D6A8247005B7645 /* SwiftUI.framework */; };
 		FAB92F822D6A8247005B7645 /* CompetitionExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = FAB92F702D6A8247005B7645 /* CompetitionExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -57,6 +58,7 @@
 				CompetitionAttributes.swift,
 				CompetitionLiveActivity.swift,
 				Views/DetailedView.swift,
+				Views/FullDetailedView.swift,
 				Views/MatchView.swift,
 				Views/MinimalMatchView.swift,
 				Views/Ranking.swift,
@@ -88,6 +90,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FA37FF6D2D6B8850008D3E52 /* Matft in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -153,6 +156,7 @@
 			);
 			name = EchoPulse;
 			packageProductDependencies = (
+				FA37FF6C2D6B8850008D3E52 /* Matft */,
 			);
 			productName = EchoPulse;
 			productReference = FAB92F5B2D6A81F5005B7645 /* EchoPulse.app */;
@@ -207,6 +211,9 @@
 			);
 			mainGroup = FAB92F522D6A81F5005B7645;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				FA37FF6B2D6B8840008D3E52 /* XCRemoteSwiftPackageReference "Matft" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = FAB92F5C2D6A81F5005B7645 /* Products */;
 			projectDirPath = "";
@@ -313,7 +320,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -370,7 +377,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
@@ -395,8 +402,9 @@
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -425,8 +433,9 @@
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -525,6 +534,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		FA37FF6B2D6B8840008D3E52 /* XCRemoteSwiftPackageReference "Matft" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/jjjkkkjjj/Matft.git";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		FA37FF6C2D6B8850008D3E52 /* Matft */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FA37FF6B2D6B8840008D3E52 /* XCRemoteSwiftPackageReference "Matft" */;
+			productName = Matft;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = FAB92F532D6A81F5005B7645 /* Project object */;
 }

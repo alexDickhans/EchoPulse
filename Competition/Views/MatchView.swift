@@ -12,6 +12,7 @@ struct MatchView: View {
     let longName: String
     private let winner: Winner
     private let timeText: String
+    let teamName: String?
     
     let dateFormatter = DateFormatter()
     
@@ -20,10 +21,10 @@ struct MatchView: View {
             Group {
                 VStack {
                     if let red2 = match.redAlliance.team2 {
-                        Text(match.redAlliance.team1)
-                        Text(red2)
+                        Text(match.redAlliance.team1).underline(isTeam(team: match.redAlliance.team1))
+                        Text(red2).underline(isTeam(team: red2))
                     } else {
-                        Text(match.redAlliance.team1)
+                        Text(match.redAlliance.team1).underline(isTeam(team: match.redAlliance.team1))
                     }
                 }
                 
@@ -55,18 +56,25 @@ struct MatchView: View {
                 VStack {
                     if let red2 = match.blueAlliance.team2 {
                         Group {
-                            Text(match.blueAlliance.team1)
-                            Text(red2)
+                            Text(match.blueAlliance.team1).underline(isTeam(team: match.blueAlliance.team1))
+                            Text(red2).underline(isTeam(team: red2))
                         }
                     } else {
-                        Text(match.blueAlliance.team1)
+                        Text(match.blueAlliance.team1).underline(isTeam(team: match.blueAlliance.team1))
                     }
                 }
             }.foregroundStyle(Color.blue, Color.black)
         }.frame(maxWidth: .infinity)
     }
     
-    public init(match: CompetitionAttributes.Match, longName: String) {
+    private func isTeam(team: String) -> Bool {
+        if let unwrappedTeam = teamName {
+            return unwrappedTeam == team
+        }
+        return false
+    }
+    
+    public init(match: CompetitionAttributes.Match, longName: String, teamName: String? = nil) {
         self.match = match
         
         if let redScore = match.redAlliance.score, let blueScore = match.blueAlliance.score {
@@ -92,6 +100,8 @@ struct MatchView: View {
         }
         
         timeText = dateFormatter.string(from: match.scheduled!) + startedTime
+        
+        self.teamName = teamName
     }
     
     private enum Winner {
