@@ -16,7 +16,7 @@ struct MinimalMatchView: View {
     var body: some View {
         Text(match.name)
             .foregroundStyle(textColor, Color.black)
-            .font(.system(size: 20, weight: .bold))
+            .font(.system(size: 14, weight: .bold))
             .minimumScaleFactor(0.4)
             .lineLimit(2).multilineTextAlignment(TextAlignment.center)
     }
@@ -25,7 +25,7 @@ struct MinimalMatchView: View {
         self.match = match
         
         if let redAlliance = match.redAlliance.score, let blueAlliance = match.blueAlliance.score {
-            textColor = redAlliance > blueAlliance ? Color.red : Color.blue
+            textColor = redAlliance == blueAlliance ? Color.gray : (redAlliance > blueAlliance ? Color.red : Color.blue)
         } else {
             textColor = Color.primary
         }

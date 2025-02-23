@@ -60,6 +60,7 @@
 				Views/MatchView.swift,
 				Views/MinimalMatchView.swift,
 				Views/Ranking.swift,
+				Views/SmallMatchView.swift,
 			);
 			target = FAB92F5A2D6A81F5005B7645 /* EchoPulse */;
 		};
