@@ -8,9 +8,9 @@
 import SwiftUI
 
 struct DetailedView: View {
-    let lastMatch: CompetitionAttributes.Match?
-    let nextMatch: CompetitionAttributes.Match?
-    let teamNextMatch: CompetitionAttributes.Match?
+    let lastMatch: CompetitionAttributes.DisplayMatch?
+    let nextMatch: CompetitionAttributes.DisplayMatch?
+    let teamNextMatch: CompetitionAttributes.DisplayMatch?
 
     var body: some View {
         VStack (spacing: 0) {
@@ -29,22 +29,22 @@ struct DetailedView: View {
 
 #Preview {
     DetailedView(
-        lastMatch: CompetitionAttributes.Match(
-            name: "Q1", scored: true,
+        lastMatch: CompetitionAttributes.DisplayMatch(
+            name: "Q1",
             scheduled: Date().addingTimeInterval(-60 * 2), startTime: Date(),
             redAlliance: CompetitionAttributes.Alliance(
                 team1: "2654E", team2: "2145Z", score: 22),
             blueAlliance: CompetitionAttributes.Alliance(
                 team1: "ABS", team2: "ABCD", score: 44)),
-        nextMatch: CompetitionAttributes.Match(
-            name: "Q2", scored: true,
+        nextMatch: CompetitionAttributes.DisplayMatch(
+            name: "Q2",
             scheduled: Date().addingTimeInterval(-60 * 2), startTime: Date(),
             redAlliance: CompetitionAttributes.Alliance(
                 team1: "2654E", team2: "2145Z", score: nil),
             blueAlliance: CompetitionAttributes.Alliance(
                 team1: "ABS", team2: "ABCD", score: nil)),
-        teamNextMatch: CompetitionAttributes.Match(
-            name: "Q4", scored: true,
+        teamNextMatch: CompetitionAttributes.DisplayMatch(
+            name: "Q4",
             scheduled: Date().addingTimeInterval(-60 * 2), startTime: Date(),
             redAlliance: CompetitionAttributes.Alliance(
                 team1: "2654E", team2: "2145Z", score: nil),

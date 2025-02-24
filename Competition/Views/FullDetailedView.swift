@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct FullDetailedView: View {
-    let matches: [CompetitionAttributes.Match]
+    let matches: [CompetitionAttributes.DisplayMatch]
     let teamName: String
 
     var body: some View {
@@ -24,20 +24,20 @@ struct FullDetailedView: View {
 
 #Preview {
     FullDetailedView(
-        matches: [CompetitionAttributes.Match(
-            name: "Q1", scored: true,
+        matches: [CompetitionAttributes.DisplayMatch(
+            name: "Q1",
             scheduled: Date().addingTimeInterval(-60 * 2), startTime: Date(),
             redAlliance: CompetitionAttributes.Alliance(
                 team1: "2654E", team2: "2145Z", score: 22),
             blueAlliance: CompetitionAttributes.Alliance(
-                team1: "ABS", team2: "ABCD", score: 44)),CompetitionAttributes.Match(
-            name: "Q2", scored: true,
+                team1: "ABS", team2: "ABCD", score: 44)),CompetitionAttributes.DisplayMatch(
+            name: "Q2",
             scheduled: Date().addingTimeInterval(-60 * 2), startTime: Date(),
             redAlliance: CompetitionAttributes.Alliance(
                 team1: "2654E", team2: "2145Z", score: nil),
             blueAlliance: CompetitionAttributes.Alliance(
-                team1: "ABS", team2: "ABCD", score: nil)), CompetitionAttributes.Match(
-            name: "Q4", scored: true,
+                team1: "ABS", team2: "ABCD", score: nil)), CompetitionAttributes.DisplayMatch(
+            name: "Q4",
             scheduled: Date().addingTimeInterval(-60 * 2), startTime: Date(),
             redAlliance: CompetitionAttributes.Alliance(
                 team1: "2654E", team2: "2145Z", score: nil),

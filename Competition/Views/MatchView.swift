@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct MatchView: View {
-    let match: CompetitionAttributes.Match
+    let match: CompetitionAttributes.DisplayMatch
     let longName: String
     private let winner: Winner
     private let timeText: String
@@ -74,7 +74,7 @@ struct MatchView: View {
         return false
     }
     
-    public init(match: CompetitionAttributes.Match, longName: String, teamName: String? = nil) {
+    public init(match: CompetitionAttributes.DisplayMatch, longName: String, teamName: String? = nil) {
         self.match = match
         
         if let redScore = match.redAlliance.score, let blueScore = match.blueAlliance.score {
@@ -99,7 +99,11 @@ struct MatchView: View {
             startedTime = " (\(dateFormatter.string(from: startTime)))"
         }
         
-        timeText = dateFormatter.string(from: match.scheduled!) + startedTime
+        if let scheduled = match.scheduled {
+            timeText = dateFormatter.string(from: scheduled) + startedTime
+        } else {
+            timeText = "No Schedule" + startedTime
+        }
         
         self.teamName = teamName
     }
@@ -113,8 +117,8 @@ struct MatchView: View {
 
 #Preview {
     MatchView(
-        match: CompetitionAttributes.Match(
-            name: "Q1", scored: true,
+        match: CompetitionAttributes.DisplayMatch(
+            name: "Q1",
             scheduled: Date().addingTimeInterval(-60 * 2), startTime: Date(),
             redAlliance: CompetitionAttributes.Alliance(
                 team1: "2654E", team2: "2145Z", score: 22),

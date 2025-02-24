@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 struct MinimalMatchView: View {
-    let match: CompetitionAttributes.Match
+    let match: CompetitionAttributes.DisplayMatch
     let textColor: Color
     
     
@@ -21,7 +21,7 @@ struct MinimalMatchView: View {
             .lineLimit(2).multilineTextAlignment(TextAlignment.center)
     }
     
-    init(match: CompetitionAttributes.Match) {
+    init(match: CompetitionAttributes.DisplayMatch) {
         self.match = match
         
         if let redAlliance = match.redAlliance.score, let blueAlliance = match.blueAlliance.score {

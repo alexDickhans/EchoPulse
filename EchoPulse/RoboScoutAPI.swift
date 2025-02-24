@@ -12,6 +12,8 @@ import EventKit
 #endif
 import Matft
 
+let API = RoboScoutAPI()
+
 enum RoboScoutAPIError: Error {
     case missing_data(String)
 }
@@ -740,6 +742,7 @@ public class Match: Identifiable {
     public var predicted_blue_score: Int
     public var predicted_red_score: Int
     public var predicted: Bool
+    public var scored: Bool
     
     public init(data: [String: Any] = [:], fetch: Bool = false) {
         
@@ -752,6 +755,8 @@ public class Match: Identifiable {
         
         let round = (data["round"] != nil) ? data["round"] as? Int ?? 0 : 0
         self.round = round_map[round] ?? Round.none
+        
+        self.scored = data["scored"] as? Bool ?? false
         
         self.instance = (data["instance"] != nil) ? data["instance"] as? Int ?? 0 : 0
         self.matchnum = (data["matchnum"] != nil) ? data["matchnum"] as? Int ?? 0 : 0
@@ -769,14 +774,14 @@ public class Match: Identifiable {
                 self.blue_score = alliance["score"] as? Int ?? -1
                 
                 for team in (alliance["teams"] != nil) ? alliance["teams"] as! [[String: Any]] : [[String: Any]]() {
-                    self.blue_alliance.append(Team(id:(team["team"] as! [String: Any])["id"] as! Int, fetch: false))
+                    self.blue_alliance.append(Team(id:(team["team"] as! [String: Any])["id"] as! Int, number: (team["team"] as! [String: Any])["name"] as! String, fetch: false))
                 }
             }
             else {
                 self.red_score = alliance["score"] as? Int ?? -1
                 
                 for team in (alliance["teams"] != nil) ? alliance["teams"] as! [[String: Any]] : [[String: Any]]() {
-                    self.red_alliance.append(Team(id:(team["team"] as! [String: Any])["id"] as! Int, fetch: false))
+                    self.red_alliance.append(Team(id:(team["team"] as! [String: Any])["id"] as! Int, number: (team["team"] as! [String: Any])["name"] as! String, fetch: false))
                 }
             }
         }

@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		FA37FF6D2D6B8850008D3E52 /* Matft in Frameworks */ = {isa = PBXBuildFile; productRef = FA37FF6C2D6B8850008D3E52 /* Matft */; };
+		FA37FF742D6CC85E008D3E52 /* Matft in Frameworks */ = {isa = PBXBuildFile; productRef = FA37FF732D6CC85E008D3E52 /* Matft */; };
 		FAB92F732D6A8247005B7645 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FAB92F722D6A8247005B7645 /* WidgetKit.framework */; };
 		FAB92F752D6A8247005B7645 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FAB92F742D6A8247005B7645 /* SwiftUI.framework */; };
 		FAB92F822D6A8247005B7645 /* CompetitionExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = FAB92F702D6A8247005B7645 /* CompetitionExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -45,6 +46,14 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		FA37FF722D6CC828008D3E52 /* Exceptions for "EchoPulse" folder in "CompetitionExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				RoboScoutAPI.swift,
+				UserSettings.swift,
+			);
+			target = FAB92F6F2D6A8247005B7645 /* CompetitionExtension */;
+		};
 		FAB92F832D6A8247005B7645 /* Exceptions for "Competition" folder in "CompetitionExtension" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
@@ -71,6 +80,9 @@
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		FAB92F5D2D6A81F5005B7645 /* EchoPulse */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				FA37FF722D6CC828008D3E52 /* Exceptions for "EchoPulse" folder in "CompetitionExtension" target */,
+			);
 			path = EchoPulse;
 			sourceTree = "<group>";
 		};
@@ -98,6 +110,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FA37FF742D6CC85E008D3E52 /* Matft in Frameworks */,
 				FAB92F752D6A8247005B7645 /* SwiftUI.framework in Frameworks */,
 				FAB92F732D6A8247005B7645 /* WidgetKit.framework in Frameworks */,
 			);
@@ -179,6 +192,7 @@
 			);
 			name = CompetitionExtension;
 			packageProductDependencies = (
+				FA37FF732D6CC85E008D3E52 /* Matft */,
 			);
 			productName = CompetitionExtension;
 			productReference = FAB92F702D6A8247005B7645 /* CompetitionExtension.appex */;
@@ -548,6 +562,11 @@
 
 /* Begin XCSwiftPackageProductDependency section */
 		FA37FF6C2D6B8850008D3E52 /* Matft */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FA37FF6B2D6B8840008D3E52 /* XCRemoteSwiftPackageReference "Matft" */;
+			productName = Matft;
+		};
+		FA37FF732D6CC85E008D3E52 /* Matft */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = FA37FF6B2D6B8840008D3E52 /* XCRemoteSwiftPackageReference "Matft" */;
 			productName = Matft;

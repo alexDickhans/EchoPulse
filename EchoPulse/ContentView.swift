@@ -32,8 +32,9 @@ class TeamEvents: ObservableObject {
 
 struct ContentView: View {
     @State var activity: Activity<CompetitionAttributes>?
-    @State var matchList: [CompetitionAttributes.Match]
+    @State var matchList: [CompetitionAttributes.DisplayMatch]
     @State var team: String
+    @State var teamID: Int
     @State var competitions: TeamEvents? = nil
     @State var event: Event? = nil
     @State var division: Division? = nil
@@ -62,7 +63,7 @@ struct ContentView: View {
                                 activity?.attributes.name
                                     ?? "No activity selected")
                             FullDetailedView(
-                                matches: matchList, teamName: team)
+                                matches: matchList, teamName: team.uppercased())
                         } else {
                             TextField("2654E", text: $team).frame(
                                 alignment: .center
@@ -103,6 +104,8 @@ struct ContentView: View {
 
         if fetched_team.registered {
             let fetched_events = TeamEvents(team: fetched_team)
+            
+            teamID = fetched_team.id
 
             Task {
                 self.competitions = fetched_events
@@ -113,32 +116,56 @@ struct ContentView: View {
     func startActivity(event: Event) {
         let attributes = CompetitionAttributes(
             name: event.name, division: event.divisions[0].name)
-        let state = ActivityContent(
-            state: CompetitionAttributes.ContentState.pout,
-            staleDate: Date().addingTimeInterval(60))
-        
+
         self.event = event
 
-        do {
-            activity = try Activity<CompetitionAttributes>.request(
-                attributes: attributes, content: state, pushType: nil)
-        } catch {
-            print(error.localizedDescription)
+        for division in event.divisions {
+            event.fetch_rankings(division: division)
+            
+            if event.rankings[division]?.contains(where: {
+                $0.team.id == self.teamID
+            }) ?? false {
+                self.division = division
+                break
+            }
+        }
+        
+        if (self.division == nil) {
+            print("Could not find division for \(self.team)")
+            return
+        }
+        
+        Task {
+            await self.updateMatchList()
+            
+            let state = ActivityContent(
+                state: CompetitionAttributes.ContentState.fromMatchList(displayMatches: self.matchList, teamName: self.team),
+                staleDate: Date().addingTimeInterval(60))
+            
+            do {
+                activity = try Activity<CompetitionAttributes>.request(
+                    attributes: attributes, content: state, pushType: nil)
+                
+                runTask()
+            } catch {
+                print(error.localizedDescription)
+            }
         }
     }
 
     func updateMatchList() async {
         self.event!.fetch_matches(division: self.division!)
-        
-        let matches = self.event!.matches
-        
-        var fetched_matches: [CompetitionAttributes.Match] = []
-        
+
+        let matches = self.event!.matches[self.division!]!
+
+        var fetched_matches: [CompetitionAttributes.DisplayMatch] = []
+
         matches.forEach { match in
-            let new_match = CompetitionAttributes.Match()
-            fetched_matches.append(new_match)
+            fetched_matches.append(
+                CompetitionAttributes.DisplayMatch.fromRoboScoutMatch(
+                    match: match))
         }
-        
+
         self.matchList = fetched_matches
     }
 
@@ -146,7 +173,12 @@ struct ContentView: View {
         guard activity != nil else { return }
 
         DispatchQueue.main.asyncAfter(deadline: .now() + 30.0) {
-            Task { await updateMatchList() }
+            Task { await updateMatchList()
+                let state = ActivityContent(
+                    state: CompetitionAttributes.ContentState.fromMatchList(displayMatches: self.matchList, teamName: self.team),
+                    staleDate: Date().addingTimeInterval(60))
+                await activity?.update(state)
+            }
 
             self.runTask()
         }
@@ -164,10 +196,10 @@ struct ContentView: View {
     init() {
         team = ""
         matchList = []
+        teamID = 0
     }
 }
 
 #Preview {
     ContentView()
 }
-
