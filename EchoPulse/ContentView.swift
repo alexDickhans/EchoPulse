@@ -34,7 +34,7 @@ struct ContentView: View {
     @State var activity: Activity<CompetitionAttributes>?
     @State var matchList: [CompetitionAttributes.Match]
     @State var team: String
-    @State var competitions: [Event]
+    @State var competitions: TeamEvents? = nil
 
     var body: some View {
         NavigationView {
@@ -73,9 +73,11 @@ struct ContentView: View {
     func buildCompetitionsList() -> some View {
         VStack(spacing: 0) {
             Group {
-                ForEach(competitions, id: \.id) { competition in
-                    Button(action: startActivity) {
-                        Text(competition.name)
+                if let events = competitions?.events {
+                    ForEach(events, id: \.id) { competition in
+                        Button(action: startActivity) {
+                            Text(competition.name)
+                        }
                     }
                 }
             }
@@ -83,15 +85,11 @@ struct ContentView: View {
     }
     
     func findCompetitions() {
-        DispatchQueue.global(qos: .userInteractive).async {
-            
-            let fetched_team = Team(number: self.team)
-            let fetched_events = TeamEvents(team: fetched_team)
-            
-            DispatchQueue.main.async {
-                self.events = fetched_events
-                self.showLoading = false
-            }
+        let fetched_team = Team(number: self.team)
+        let fetched_events = TeamEvents(team: fetched_team)
+        
+        Task {
+            self.competitions = fetched_events
         }
     }
 
@@ -120,7 +118,6 @@ struct ContentView: View {
 
     init() {
         team = ""
-        competitions = []
         matchList = []
     }
 }
