@@ -9,9 +9,32 @@ import ActivityKit
 import SwiftUI
 
 // IMPORTANT: LIVE VIEW CAN ONLY SAY ON SCREEN FOR 8 HOURS - maybe
+class TeamEvents: ObservableObject {
+    @Published var event_indexes: [String]
+    @Published var events: [Event]
+    
+    init(team: Team? = nil) {
+        event_indexes = [String]()
+        events = [Event]()
+        if team == nil {
+            return
+        }
+        team!.fetch_events()
+        events = team!.events
+        var count = 0
+        for _ in events {
+            event_indexes.append(String(count))
+            count += 1
+        }
+        event_indexes.reverse()
+    }
+}
 
 struct ContentView: View {
     @State var activity: Activity<CompetitionAttributes>?
+    @State var matchList: [CompetitionAttributes.Match]
+    @State var team: String
+    @State var competitions: [Event]
 
     var body: some View {
         NavigationView {
@@ -32,42 +55,44 @@ struct ContentView: View {
                                 }
                             }
                             FullDetailedView(
-                                matches: [
-                                    CompetitionAttributes.ContentState.pout
-                                        .lastMatch!,
-                                    CompetitionAttributes.ContentState.pout
-                                        .lastMatch!,
-                                    CompetitionAttributes.ContentState.pout
-                                        .lastMatch!,
-                                    CompetitionAttributes.ContentState.pout
-                                        .lastMatch!,
-                                    CompetitionAttributes.ContentState.pout
-                                        .lastMatch!,
-                                    CompetitionAttributes.ContentState.pout
-                                        .lastMatch!,
-                                    CompetitionAttributes.ContentState.pout
-                                        .lastMatch!,
-                                    CompetitionAttributes.ContentState.pout
-                                        .lastMatch!,
-                                    CompetitionAttributes.ContentState.pout
-                                        .lastMatch!,
-                                    CompetitionAttributes.ContentState.pout
-                                        .lastMatch!,
-                                    CompetitionAttributes.ContentState.pout
-                                        .nextMatch!,
-                                    CompetitionAttributes.ContentState.pout
-                                        .teamNextMatch!,
-                                ], teamName: "2654E")
+                                matches: matchList, teamName: team)
                         } else {
-                            Button("Start Activity") {
-                                startActivity()
+                            TextField("2654E", text: $team).frame(alignment: .center).multilineTextAlignment(.center).font(.system(size: 36))
+                            Button("Search") {
+                                findCompetitions()
                             }
+                            buildCompetitionsList()
                         }
                     }.buttonStyle(.borderedProminent).controlSize(.large)
                 }
             }.edgesIgnoringSafeArea(.top)
         }
 
+    }
+    
+    func buildCompetitionsList() -> some View {
+        VStack(spacing: 0) {
+            Group {
+                ForEach(competitions, id: \.id) { competition in
+                    Button(action: startActivity) {
+                        Text(competition.name)
+                    }
+                }
+            }
+        }
+    }
+    
+    func findCompetitions() {
+        DispatchQueue.global(qos: .userInteractive).async {
+            
+            let fetched_team = Team(number: self.team)
+            let fetched_events = TeamEvents(team: fetched_team)
+            
+            DispatchQueue.main.async {
+                self.events = fetched_events
+                self.showLoading = false
+            }
+        }
     }
 
     func startActivity() {
@@ -94,6 +119,9 @@ struct ContentView: View {
     }
 
     init() {
+        team = ""
+        competitions = []
+        matchList = []
     }
 }
 
