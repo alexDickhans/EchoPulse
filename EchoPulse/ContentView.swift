@@ -83,20 +83,28 @@ struct ContentView: View {
 
     func buildCompetitionsList() -> some View {
         VStack(spacing: 0) {
-            Group {
-                if let events = competitions?.events {
-                    ForEach(events, id: \.id) { competition in
-                        Button(action: { () -> Void in
-                            self.startActivity(event: competition)
-                        }) {
-                            Text(competition.name).multilineTextAlignment(
-                                .leading
-                            ).padding(10)
-                        }
+            Divider()
+                .padding(.horizontal)
+            if let events = competitions?.events.reversed() {
+                ForEach(events, id: \.id) { competition in
+                    Button(action: {
+                        self.startActivity(event: competition)
+                    }) {
+                        Text(competition.name)
+                            .font(.headline)
+                            .foregroundColor(.orange)  // Text color to indicate action
+                            .padding()
+                            .frame(maxWidth: .infinity, alignment: .leading)  // Full width button
                     }
+                    .buttonStyle(PlainButtonStyle())  // Remove default button style for plain text
+
+                    // Add a line (Divider) between items
+                    Divider()
+                        .padding(.horizontal)
                 }
             }
         }
+        .padding(.top)
     }
 
     func findCompetitions() {
@@ -104,7 +112,7 @@ struct ContentView: View {
 
         if fetched_team.registered {
             let fetched_events = TeamEvents(team: fetched_team)
-            
+
             teamID = fetched_team.id
 
             Task {
@@ -115,13 +123,14 @@ struct ContentView: View {
 
     func startActivity(event: Event) {
         let attributes = CompetitionAttributes(
-            name: event.name, division: event.divisions[0].name)
+            name: event.name, teamName: team.uppercased(),
+            division: event.divisions[0].name)
 
         self.event = event
 
         for division in event.divisions {
             event.fetch_rankings(division: division)
-            
+
             if event.rankings[division]?.contains(where: {
                 $0.team.id == self.teamID
             }) ?? false {
@@ -129,23 +138,28 @@ struct ContentView: View {
                 break
             }
         }
-        
-        if (self.division == nil) {
+
+        if self.division == nil {
             print("Could not find division for \(self.team)")
             return
         }
-        
+
         Task {
             await self.updateMatchList()
-            
+
+            let fetch_state = CompetitionAttributes.ContentState.fromMatchList(
+                displayMatches: self.matchList, teamName: self.team)
+
+            print(fetch_state)
+
             let state = ActivityContent(
-                state: CompetitionAttributes.ContentState.fromMatchList(displayMatches: self.matchList, teamName: self.team),
+                state: fetch_state,
                 staleDate: Date().addingTimeInterval(60))
-            
+
             do {
-                activity = try Activity<CompetitionAttributes>.request(
+                self.activity = try Activity<CompetitionAttributes>.request(
                     attributes: attributes, content: state, pushType: nil)
-                
+
                 runTask()
             } catch {
                 print(error.localizedDescription)
@@ -172,10 +186,12 @@ struct ContentView: View {
     private func runTask() {
         guard activity != nil else { return }
 
-        DispatchQueue.main.asyncAfter(deadline: .now() + 30.0) {
-            Task { await updateMatchList()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 30.0, qos: .utility) {
+            Task {
+                await updateMatchList()
                 let state = ActivityContent(
-                    state: CompetitionAttributes.ContentState.fromMatchList(displayMatches: self.matchList, teamName: self.team),
+                    state: CompetitionAttributes.ContentState.fromMatchList(
+                        displayMatches: self.matchList, teamName: self.team),
                     staleDate: Date().addingTimeInterval(60))
                 await activity?.update(state)
             }

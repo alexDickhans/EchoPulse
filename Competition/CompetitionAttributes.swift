@@ -38,7 +38,7 @@ struct CompetitionAttributes: ActivityAttributes {
                 if [
                     match.redAlliance.team1, match.redAlliance.team2,
                     match.blueAlliance.team1, match.blueAlliance.team2,
-                ].contains(where: { (team: String?) -> Bool in team == teamName
+                ].contains(where: { (team: String?) -> Bool in team == teamName.uppercased()
                     })
                 {
                     teamNextMatch = index
@@ -101,5 +101,6 @@ struct CompetitionAttributes: ActivityAttributes {
     }
 
     public let name: String
+    public let teamName: String?
     public let division: String
 }

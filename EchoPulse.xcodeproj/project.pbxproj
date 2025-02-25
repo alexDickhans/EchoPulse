@@ -54,6 +54,13 @@
 			);
 			target = FAB92F6F2D6A8247005B7645 /* CompetitionExtension */;
 		};
+		FA5CC1472D6D322C007A6BB8 /* Exceptions for "EchoPulse" folder in "EchoPulse" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = FAB92F5A2D6A81F5005B7645 /* EchoPulse */;
+		};
 		FAB92F832D6A8247005B7645 /* Exceptions for "Competition" folder in "CompetitionExtension" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
@@ -81,6 +88,7 @@
 		FAB92F5D2D6A81F5005B7645 /* EchoPulse */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
+				FA5CC1472D6D322C007A6BB8 /* Exceptions for "EchoPulse" folder in "EchoPulse" target */,
 				FA37FF722D6CC828008D3E52 /* Exceptions for "EchoPulse" folder in "CompetitionExtension" target */,
 			);
 			path = EchoPulse;
@@ -412,6 +420,7 @@
 				DEVELOPMENT_TEAM = NA9G8MDBHJ;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = EchoPulse/Info.plist;
 				INFOPLIST_KEY_NSSupportsLiveActivities = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -443,6 +452,7 @@
 				DEVELOPMENT_TEAM = NA9G8MDBHJ;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = EchoPulse/Info.plist;
 				INFOPLIST_KEY_NSSupportsLiveActivities = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;

@@ -11,19 +11,17 @@ struct DetailedView: View {
     let lastMatch: CompetitionAttributes.DisplayMatch?
     let nextMatch: CompetitionAttributes.DisplayMatch?
     let teamNextMatch: CompetitionAttributes.DisplayMatch?
+    let teamNumber: String?
 
     var body: some View {
         VStack (spacing: 0) {
             if let match = lastMatch {
-                MatchView(match: match, longName: "Last Match")
+                MatchView(match: match, longName: "Last Match", teamName: teamNumber)
             }
-//            if let match = nextMatch {
-//                MatchView(match: match)
-//            }
             if let match = teamNextMatch {
-                MatchView(match: match, longName: "Next Up")
+                MatchView(match: match, longName: "Next Up", teamName: teamNumber)
             }
-        }.padding(EdgeInsets(top: 30, leading: 20, bottom: 30, trailing: 20))
+        }.padding(EdgeInsets(top: 10, leading: 20, bottom: 10, trailing: 20))
     }
 }
 
@@ -49,5 +47,5 @@ struct DetailedView: View {
             redAlliance: CompetitionAttributes.Alliance(
                 team1: "2654E", team2: "2145Z", score: nil),
             blueAlliance: CompetitionAttributes.Alliance(
-                team1: "ABS", team2: "ABCD", score: nil)))
+                team1: "ABS", team2: "ABCD", score: nil)), teamNumber: "2654E")
 }

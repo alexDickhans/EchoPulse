@@ -48,7 +48,11 @@ struct SmallMatchView: View {
             startedTime = "\n(\(dateFormatter.string(from: startTime)))"
         }
         
-        timeText = dateFormatter.string(from: match.scheduled!) + startedTime
+        if let scheduledTime = match.scheduled {
+            timeText = dateFormatter.string(from: scheduledTime) + startedTime
+        } else {
+            timeText = "N/S" + startedTime
+        }
     }
     
     private enum Winner {

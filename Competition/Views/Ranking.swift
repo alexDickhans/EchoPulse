@@ -12,7 +12,8 @@ struct Ranking: View {
     let num: Int
     
     var body: some View {
-        Text(String(format: "Rank %d", rank, num)).bold()
+//        Text(String(format: "Rank %d", rank, num)).bold()
+        EmptyView()
     }
 }
 
