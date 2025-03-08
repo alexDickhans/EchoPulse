@@ -218,7 +218,6 @@ public class RoboScoutAPI {
         let task = URLSession.shared.dataTask(with: request as URLRequest) { (response_data, response, error) in
             if response_data != nil {
                 do {
-                    print(String(format: "RoboServer API request: %@", components.url?.description ?? request_url))
                     // Convert the data to JSON
                     let json = try JSONSerialization.jsonObject(with: response_data!) as? [String: Any]
                     
@@ -286,7 +285,6 @@ public class RoboScoutAPI {
             let task = URLSession.shared.dataTask(with: request as URLRequest) { (response_data, response, error) in
                 if response_data != nil {
                     do {
-                        print(String(format: "RobotEvents API request (page %d): %@", page, components.url?.description ?? request_url))
                         // Convert the data to JSON
                         let json = try JSONSerialization.jsonObject(with: response_data!) as? [String: Any]
                         

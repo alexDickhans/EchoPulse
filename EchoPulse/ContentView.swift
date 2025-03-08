@@ -30,6 +30,12 @@ class TeamEvents: ObservableObject {
     }
 }
 
+struct DeviceSubscription : Codable, Hashable {
+    let competition_id: Int
+    let division_id: Int
+    let device_token: String
+}
+
 struct ContentView: View {
     @State var activity: Activity<CompetitionAttributes>?
     @State var matchList: [CompetitionAttributes.DisplayMatch]
@@ -150,17 +156,39 @@ struct ContentView: View {
             let fetch_state = CompetitionAttributes.ContentState.fromMatchList(
                 displayMatches: self.matchList, teamName: self.team)
 
-            print(fetch_state)
-
             let state = ActivityContent(
                 state: fetch_state,
                 staleDate: Date().addingTimeInterval(60))
 
             do {
                 self.activity = try Activity<CompetitionAttributes>.request(
-                    attributes: attributes, content: state, pushType: nil)
+                    attributes: attributes, content: state, pushType: .token)
 
-                runTask()
+                await updateMatchList();
+                
+                let url = URL(string: "http://192.168.0.109:3030/v1/subscribe")
+                
+                var urlRequest = URLRequest(url: url!)
+                
+                urlRequest.httpMethod = "POST"
+                
+                urlRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
+                
+                let device = DeviceSubscription(competition_id: event.id, division_id: self.division!.id, device_token: "placeholder") // todo: get device token
+                
+                let encoder = JSONEncoder()
+                
+                let data = try encoder.encode(device)
+                
+                print(data.base64EncodedString())
+                
+                urlRequest.httpBody = data
+                
+                let (responseData, response) = try await URLSession.shared.upload(for: urlRequest, from: data)
+                
+                print("responseData: ", responseData, " , response", response);
+                
+                
             } catch {
                 print(error.localizedDescription)
             }
@@ -181,23 +209,6 @@ struct ContentView: View {
         }
 
         self.matchList = fetched_matches
-    }
-
-    private func runTask() {
-        guard activity != nil else { return }
-
-        DispatchQueue.main.asyncAfter(deadline: .now() + 30.0, qos: .utility) {
-            Task {
-                await updateMatchList()
-                let state = ActivityContent(
-                    state: CompetitionAttributes.ContentState.fromMatchList(
-                        displayMatches: self.matchList, teamName: self.team),
-                    staleDate: Date().addingTimeInterval(60))
-                await activity?.update(state)
-            }
-
-            self.runTask()
-        }
     }
 
     func stopActivity() async {
