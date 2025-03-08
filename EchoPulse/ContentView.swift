@@ -36,6 +36,11 @@ struct DeviceSubscription : Codable, Hashable {
     let device_token: String
 }
 
+struct DeviceSubscriptionChangeRequest : Codable, Hashable {
+    let last_device_token: String
+    let next_device_token: String
+}
+
 struct ContentView: View {
     @State var activity: Activity<CompetitionAttributes>?
     @State var matchList: [CompetitionAttributes.DisplayMatch]
@@ -44,6 +49,7 @@ struct ContentView: View {
     @State var competitions: TeamEvents? = nil
     @State var event: Event? = nil
     @State var division: Division? = nil
+    @State var lastPushToken: String? = nil
 
     var body: some View {
         NavigationView {
@@ -156,43 +162,77 @@ struct ContentView: View {
             let fetch_state = CompetitionAttributes.ContentState.fromMatchList(
                 displayMatches: self.matchList, teamName: self.team)
 
-            let state = ActivityContent(
-                state: fetch_state,
-                staleDate: Date().addingTimeInterval(60))
-
             do {
                 self.activity = try Activity<CompetitionAttributes>.request(
-                    attributes: attributes, content: state, pushType: .token)
+                    attributes: attributes, content: .init(state: fetch_state, staleDate: nil), pushType: .token)
 
                 await updateMatchList();
                 
-                let url = URL(string: "http://192.168.0.109:3030/v1/subscribe")
-                
-                var urlRequest = URLRequest(url: url!)
-                
-                urlRequest.httpMethod = "POST"
-                
-                urlRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
-                
-                let device = DeviceSubscription(competition_id: event.id, division_id: self.division!.id, device_token: "placeholder") // todo: get device token
-                
-                let encoder = JSONEncoder()
-                
-                let data = try encoder.encode(device)
-                
-                print(data.base64EncodedString())
-                
-                urlRequest.httpBody = data
-                
-                let (responseData, response) = try await URLSession.shared.upload(for: urlRequest, from: data)
-                
-                print("responseData: ", responseData, " , response", response);
+                Task {
+                    for await pushToken in activity!.pushTokenUpdates {
+                        let pushTokenString = pushToken.reduce("") { $0 + String(format: "%02x", $1) }
+                        
+                        print("New push token: \(pushTokenString)")
+                        
+                        try await self.sendPushToken(id: event.id, divisionid: self.division!.id, pushTokenString: pushTokenString)
+                    }
+                }
                 
                 
             } catch {
                 print(error.localizedDescription)
             }
         }
+    }
+    
+    func sendPushToken(id: Int, divisionid: Int, pushTokenString: String) async throws {
+        if let last = lastPushToken {
+            try await self.changePushToken(lastPushToken: last, newPushToken: pushTokenString)
+        } else {
+            let url = URL(string: "http://192.168.0.109:3030/v1/subscribe")
+                            
+            var urlRequest = URLRequest(url: url!)
+            
+            urlRequest.httpMethod = "POST"
+            
+            urlRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
+            
+            let device = DeviceSubscription(competition_id: id, division_id: divisionid, device_token: pushTokenString)
+            
+            let encoder = JSONEncoder()
+            
+            let data = try encoder.encode(device)
+            
+            print(data.base64EncodedString())
+            
+            urlRequest.httpBody = data
+                            
+            let (responseData, response) = try await URLSession.shared.upload(for: urlRequest, from: data)
+            
+            lastPushToken = pushTokenString
+        }
+    }
+    
+    func changePushToken(lastPushToken: String, newPushToken: String) async throws {
+        let url = URL(string: "http://192.168.0.109:3030/v1/change")
+                        
+        var urlRequest = URLRequest(url: url!)
+        
+        urlRequest.httpMethod = "POST"
+        
+        urlRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        let device = DeviceSubscriptionChangeRequest(last_device_token: lastPushToken, next_device_token: newPushToken)
+        
+        let encoder = JSONEncoder()
+        
+        let data = try encoder.encode(device)
+        
+        print(data.base64EncodedString())
+        
+        urlRequest.httpBody = data
+                        
+        let (responseData, response) = try await URLSession.shared.upload(for: urlRequest, from: data)
     }
 
     func updateMatchList() async {
