@@ -49,7 +49,6 @@ struct CompetitionLiveActivity: Widget {
                     MinimalMatchView(match: match)
                 }
             }
-            .widgetURL(URL(string: "http://www.apple.com"))
             .keylineTint(Color.red)
         }
     }

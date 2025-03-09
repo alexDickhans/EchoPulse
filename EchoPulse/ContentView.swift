@@ -34,11 +34,12 @@ struct DeviceSubscription : Codable, Hashable {
     let competition_id: Int
     let division_id: Int
     let device_token: String
+    let watch_team: String
 }
 
 struct DeviceSubscriptionChangeRequest : Codable, Hashable {
-    let last_device_token: String
-    let next_device_token: String
+    let old_device_token: String
+    let new_device_token: String
 }
 
 struct ContentView: View {
@@ -172,9 +173,9 @@ struct ContentView: View {
                     for await pushToken in activity!.pushTokenUpdates {
                         let pushTokenString = pushToken.reduce("") { $0 + String(format: "%02x", $1) }
                         
-                        print("New push token: \(pushTokenString)")
+                        print("New push token: \(pushTokenString)  done")
                         
-                        try await self.sendPushToken(id: event.id, divisionid: self.division!.id, pushTokenString: pushTokenString)
+                        try await self.sendPushToken(id: event.id, divisionid: self.division!.id, teamName: self.team, pushTokenString: pushTokenString)
                     }
                 }
                 
@@ -185,11 +186,11 @@ struct ContentView: View {
         }
     }
     
-    func sendPushToken(id: Int, divisionid: Int, pushTokenString: String) async throws {
+    func sendPushToken(id: Int, divisionid: Int, teamName: String, pushTokenString: String) async throws {
         if let last = lastPushToken {
             try await self.changePushToken(lastPushToken: last, newPushToken: pushTokenString)
         } else {
-            let url = URL(string: "http://192.168.0.109:3030/v1/subscribe")
+            let url = URL(string: "http://192.168.0.115:3030/v1/subscribe")
                             
             var urlRequest = URLRequest(url: url!)
             
@@ -197,7 +198,7 @@ struct ContentView: View {
             
             urlRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
             
-            let device = DeviceSubscription(competition_id: id, division_id: divisionid, device_token: pushTokenString)
+            let device = DeviceSubscription(competition_id: id, division_id: divisionid, device_token: pushTokenString, watch_team: teamName.uppercased())
             
             let encoder = JSONEncoder()
             
@@ -209,12 +210,13 @@ struct ContentView: View {
                             
             let (responseData, response) = try await URLSession.shared.upload(for: urlRequest, from: data)
             
+            
             lastPushToken = pushTokenString
         }
     }
     
     func changePushToken(lastPushToken: String, newPushToken: String) async throws {
-        let url = URL(string: "http://192.168.0.109:3030/v1/change")
+        let url = URL(string: "http://192.168.0.115:3030/v1/change")
                         
         var urlRequest = URLRequest(url: url!)
         
@@ -222,7 +224,7 @@ struct ContentView: View {
         
         urlRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
         
-        let device = DeviceSubscriptionChangeRequest(last_device_token: lastPushToken, next_device_token: newPushToken)
+        let device = DeviceSubscriptionChangeRequest(old_device_token: lastPushToken, new_device_token: newPushToken)
         
         let encoder = JSONEncoder()
         
@@ -233,6 +235,10 @@ struct ContentView: View {
         urlRequest.httpBody = data
                         
         let (responseData, response) = try await URLSession.shared.upload(for: urlRequest, from: data)
+        
+        self.lastPushToken = newPushToken
+        
+        print(response)
     }
 
     func updateMatchList() async {
@@ -256,8 +262,16 @@ struct ContentView: View {
             ActivityContent(
                 state: CompetitionAttributes.ContentState.smiley, staleDate: nil
             ), dismissalPolicy: ActivityUIDismissalPolicy.immediate)
-
+        
         activity = nil
+        
+        do {
+            try await changePushToken(lastPushToken: lastPushToken ?? "", newPushToken: "")
+        } catch {
+            print("Unable to remove push token, \(error.localizedDescription)")
+        }
+        
+        lastPushToken = nil
     }
 
     init() {
