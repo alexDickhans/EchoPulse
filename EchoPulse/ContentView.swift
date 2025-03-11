@@ -60,6 +60,8 @@ struct ContentView: View {
     @State var alertTitle: String = "Testing"
     @State var didError: Bool = false
     @State var startDetails: LiveActivityStartDetails = LiveActivityStartDetails(name: "Test", error: "testing");
+    @Environment(\.scenePhase) private var scenePhase
+    @State var lastUpdated: Date
     
 
     var body: some View {
@@ -108,6 +110,27 @@ struct ContentView: View {
             
         } message: { details in
             Text(details.error)
+        }.onChange(of: scenePhase) {
+            Task {
+                print("appeared")
+                
+                let activities = Activity<CompetitionAttributes>.activities
+                
+                if !activities.isEmpty {
+                    
+                    if scenePhase == .active && Date().timeIntervalSince(lastUpdated) > 30 {
+                        self.activity = activities[0]
+                        self.team = activity!.attributes.teamName!
+                        self.event = Event(id: activity!.attributes.eventId)
+                        self.division = Division(id: activity!.attributes.divisionId, name: "")
+                        await updateMatchList()
+                    }
+                } else {
+                    self.activity = nil
+                    self.division = nil
+                    self.event = nil
+                }
+            }
         }
     }
 
@@ -152,10 +175,6 @@ struct ContentView: View {
     }
 
     func startActivity(event: Event) {
-        let attributes = CompetitionAttributes(
-            name: event.name, teamName: team.uppercased(),
-            division: event.divisions[0].name)
-
         self.event = event
 
         for division in event.divisions {
@@ -168,12 +187,17 @@ struct ContentView: View {
                 break
             }
         }
-
+        
         if self.division == nil {
             print("Could not find division for \(self.team)")
             self.showError(alertTitle: "Unable to find division for \(self.team.uppercased()), likely means the competition isn't started yet.", startDetails: LiveActivityStartDetails(name: "No division", error: ""))
             return
         }
+        
+        print(self.division)
+        
+        let attributes = CompetitionAttributes(
+            name: event.name, eventId: event.id, divisionId: self.division!.id, teamName: team.uppercased())
 
         Task {
             await self.updateMatchList()
@@ -283,6 +307,10 @@ struct ContentView: View {
         }
 
         self.matchList = fetched_matches
+        
+        self.lastUpdated = Date()
+        
+        print("updated match list")
     }
 
     func stopActivity() async {
@@ -292,7 +320,8 @@ struct ContentView: View {
             ), dismissalPolicy: ActivityUIDismissalPolicy.immediate)
         
         activity = nil
-        
+        division = nil
+        event = nil
     }
     
     func showError(alertTitle: String, startDetails: LiveActivityStartDetails) {
@@ -306,6 +335,7 @@ struct ContentView: View {
         team = ""
         matchList = []
         teamID = 0
+        lastUpdated = Date(timeIntervalSince1970: 0.0)
     }
 }
 

@@ -14,7 +14,7 @@ extension Array {
     }
 }
 
-struct CompetitionAttributes: ActivityAttributes {
+struct CompetitionAttributes: ActivityAttributes, Codable {
     public struct ContentState: Codable, Hashable {
         // Dynamic stateful properties about your activity go here!
         public let lastMatch: DisplayMatch?
@@ -101,6 +101,7 @@ struct CompetitionAttributes: ActivityAttributes {
     }
 
     public let name: String
+    public let eventId: Int
+    public let divisionId: Int
     public let teamName: String?
-    public let division: String
 }
