@@ -42,6 +42,12 @@ struct DeviceSubscriptionChangeRequest : Codable, Hashable {
     let new_device_token: String
 }
 
+struct LiveActivityStartDetails {
+    let name: String
+    let error: String
+    let id = UUID()
+}
+
 struct ContentView: View {
     @State var activity: Activity<CompetitionAttributes>?
     @State var matchList: [CompetitionAttributes.DisplayMatch]
@@ -51,6 +57,10 @@ struct ContentView: View {
     @State var event: Event? = nil
     @State var division: Division? = nil
     @State var lastPushToken: String? = nil
+    @State var alertTitle: String = "Testing"
+    @State var didError: Bool = false
+    @State var startDetails: LiveActivityStartDetails = LiveActivityStartDetails(name: "Test", error: "testing");
+    
 
     var body: some View {
         NavigationView {
@@ -60,7 +70,7 @@ struct ContentView: View {
                 ) {
                     Color.orange
                         .frame(height: 100)  // Height of the top bar
-                    Text("Echo Live")
+                    Text("Echo Pulse")
                         .foregroundColor(.white)  // Text color
                         .padding().font(.system(size: 18, weight: .heavy))
                 }.edgesIgnoringSafeArea(.top)
@@ -90,8 +100,15 @@ struct ContentView: View {
                     }.buttonStyle(.borderedProminent).controlSize(.large)
                 }
             }.edgesIgnoringSafeArea(.top)
+        }.alert(
+            alertTitle,
+            isPresented: $didError,
+            presenting: startDetails
+        ) { details in
+            
+        } message: { details in
+            Text(details.error)
         }
-
     }
 
     func buildCompetitionsList() -> some View {
@@ -154,6 +171,7 @@ struct ContentView: View {
 
         if self.division == nil {
             print("Could not find division for \(self.team)")
+            self.showError(alertTitle: "Unable to find division for \(self.team.uppercased()), likely means the competition isn't started yet.", startDetails: LiveActivityStartDetails(name: "No division", error: ""))
             return
         }
 
@@ -175,7 +193,12 @@ struct ContentView: View {
                         
                         print("New push token: \(pushTokenString)  done")
                         
-                        try await self.sendPushToken(id: event.id, divisionid: self.division!.id, teamName: self.team, pushTokenString: pushTokenString)
+                        do {
+                            try await self.sendPushToken(id: event.id, divisionid: self.division!.id, teamName: self.team, pushTokenString: pushTokenString)
+                        } catch {
+                            self.showError(alertTitle: "Unable to send push token", startDetails: LiveActivityStartDetails(name: "No division", error: ""))
+                            await stopActivity()
+                        }
                     }
                 }
                 
@@ -188,6 +211,7 @@ struct ContentView: View {
                                 print("sucessfully removed app push token")
                             } catch {
                                 print("unable to remove push token: \(error.localizedDescription)")
+                                self.showError(alertTitle: "Unable to remove push token, this live activity will not work, try again later.", startDetails: LiveActivityStartDetails(name: "No division", error: ""))
                             }
                         default:
                             break
@@ -196,6 +220,7 @@ struct ContentView: View {
                 }
             } catch {
                 print(error.localizedDescription)
+                showError(alertTitle: "Unable to start live activity ", startDetails: LiveActivityStartDetails(name: "", error: ""))
             }
         }
     }
@@ -268,6 +293,13 @@ struct ContentView: View {
         
         activity = nil
         
+    }
+    
+    func showError(alertTitle: String, startDetails: LiveActivityStartDetails) {
+        didError = true
+        
+        self.alertTitle = alertTitle
+        self.startDetails = startDetails
     }
 
     init() {

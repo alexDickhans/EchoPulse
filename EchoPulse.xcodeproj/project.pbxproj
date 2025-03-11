@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		FA37FF6D2D6B8850008D3E52 /* Matft in Frameworks */ = {isa = PBXBuildFile; productRef = FA37FF6C2D6B8850008D3E52 /* Matft */; };
 		FA37FF742D6CC85E008D3E52 /* Matft in Frameworks */ = {isa = PBXBuildFile; productRef = FA37FF732D6CC85E008D3E52 /* Matft */; };
+		FA9606702D808387005A2500 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FA96066F2D808387005A2500 /* Launch Screen.storyboard */; };
+		FA9606712D808387005A2500 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FA96066F2D808387005A2500 /* Launch Screen.storyboard */; };
 		FAB92F732D6A8247005B7645 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FAB92F722D6A8247005B7645 /* WidgetKit.framework */; };
 		FAB92F752D6A8247005B7645 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FAB92F742D6A8247005B7645 /* SwiftUI.framework */; };
 		FAB92F822D6A8247005B7645 /* CompetitionExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = FAB92F702D6A8247005B7645 /* CompetitionExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -40,6 +42,7 @@
 
 /* Begin PBXFileReference section */
 		FA96063B2D7CD1E3005A2500 /* CompetitionExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = CompetitionExtension.entitlements; sourceTree = "<group>"; };
+		FA96066F2D808387005A2500 /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		FAB92F5B2D6A81F5005B7645 /* EchoPulse.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EchoPulse.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FAB92F702D6A8247005B7645 /* CompetitionExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = CompetitionExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		FAB92F722D6A8247005B7645 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
@@ -131,6 +134,7 @@
 		FAB92F522D6A81F5005B7645 = {
 			isa = PBXGroup;
 			children = (
+				FA96066F2D808387005A2500 /* Launch Screen.storyboard */,
 				FA96063B2D7CD1E3005A2500 /* CompetitionExtension.entitlements */,
 				FAB92F5D2D6A81F5005B7645 /* EchoPulse */,
 				FAB92F762D6A8247005B7645 /* Competition */,
@@ -254,6 +258,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FA9606712D808387005A2500 /* Launch Screen.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -261,6 +266,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FA9606702D808387005A2500 /* Launch Screen.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
