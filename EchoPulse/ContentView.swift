@@ -65,12 +65,12 @@ struct ContentView: View {
     
 
     var body: some View {
-        NavigationView {
+        VStack {
             VStack {
                 ZStack(
                     alignment: Alignment(horizontal: .center, vertical: .bottom)
                 ) {
-                    Color.orange
+                    Color(.accent)
                         .frame(height: 100)  // Height of the top bar
                     Text("Echo Pulse")
                         .foregroundColor(.white)  // Text color
@@ -194,7 +194,7 @@ struct ContentView: View {
             return
         }
         
-        print(self.division)
+    
         
         let attributes = CompetitionAttributes(
             name: event.name, eventId: event.id, divisionId: self.division!.id, teamName: team.uppercased())

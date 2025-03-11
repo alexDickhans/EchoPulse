@@ -6,28 +6,11 @@
         "components" : {
           "alpha" : "1.000",
           "blue" : "0.000",
-          "green" : "0.578",
-          "red" : "1.000"
+          "green" : "0.494",
+          "red" : "0.960"
         }
       },
-      "idiom" : "universal"
-    },
-    {
-      "appearances" : [
-        {
-          "appearance" : "luminosity",
-          "value" : "light"
-        }
-      ],
-      "color" : {
-        "color-space" : "srgb",
-        "components" : {
-          "alpha" : "1.000",
-          "blue" : "0.000",
-          "green" : "0.578",
-          "red" : "1.000"
-        }
-      },
+      "display-gamut" : "sRGB",
       "idiom" : "universal"
     },
     {
@@ -42,10 +25,43 @@
         "components" : {
           "alpha" : "1.000",
           "blue" : "0.000",
-          "green" : "0.578",
-          "red" : "1.000"
+          "green" : "0.494",
+          "red" : "0.960"
         }
       },
+      "display-gamut" : "sRGB",
+      "idiom" : "universal"
+    },
+    {
+      "color" : {
+        "color-space" : "display-p3",
+        "components" : {
+          "alpha" : "1.000",
+          "blue" : "0.192",
+          "green" : "0.519",
+          "red" : "0.900"
+        }
+      },
+      "display-gamut" : "display-P3",
+      "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "color" : {
+        "color-space" : "display-p3",
+        "components" : {
+          "alpha" : "1.000",
+          "blue" : "0.192",
+          "green" : "0.519",
+          "red" : "0.900"
+        }
+      },
+      "display-gamut" : "display-P3",
       "idiom" : "universal"
     }
   ],
