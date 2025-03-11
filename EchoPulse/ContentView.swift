@@ -179,7 +179,21 @@ struct ContentView: View {
                     }
                 }
                 
-                
+                Task {
+                    for await event in activity!.activityStateUpdates {
+                        switch event {
+                        case .ended:
+                            do {
+                                try await changePushToken(lastPushToken: lastPushToken!, newPushToken: "")
+                                print("sucessfully removed app push token")
+                            } catch {
+                                print("unable to remove push token: \(error.localizedDescription)")
+                            }
+                        default:
+                            break
+                        }
+                    }
+                }
             } catch {
                 print(error.localizedDescription)
             }
@@ -190,7 +204,7 @@ struct ContentView: View {
         if let last = lastPushToken {
             try await self.changePushToken(lastPushToken: last, newPushToken: pushTokenString)
         } else {
-            let url = URL(string: "http://192.168.0.115:3030/v1/subscribe")
+            let url = URL(string: "https://echoscopebackend.fly.dev" + "/v1/subscribe")
                             
             var urlRequest = URLRequest(url: url!)
             
@@ -203,20 +217,15 @@ struct ContentView: View {
             let encoder = JSONEncoder()
             
             let data = try encoder.encode(device)
-            
-            print(data.base64EncodedString())
-            
-            urlRequest.httpBody = data
                             
-            let (responseData, response) = try await URLSession.shared.upload(for: urlRequest, from: data)
-            
+            let _ = try await URLSession.shared.upload(for: urlRequest, from: data)
             
             lastPushToken = pushTokenString
         }
     }
     
     func changePushToken(lastPushToken: String, newPushToken: String) async throws {
-        let url = URL(string: "http://192.168.0.115:3030/v1/change")
+        let url = URL(string: "https://echoscopebackend.fly.dev" + "/v1/change")
                         
         var urlRequest = URLRequest(url: url!)
         
@@ -229,16 +238,10 @@ struct ContentView: View {
         let encoder = JSONEncoder()
         
         let data = try encoder.encode(device)
-        
-        print(data.base64EncodedString())
-        
-        urlRequest.httpBody = data
                         
-        let (responseData, response) = try await URLSession.shared.upload(for: urlRequest, from: data)
+        let _ = try await URLSession.shared.upload(for: urlRequest, from: data)
         
-        self.lastPushToken = newPushToken
-        
-        print(response)
+        self.lastPushToken = if newPushToken.isEmpty {nil} else { newPushToken }
     }
 
     func updateMatchList() async {
@@ -265,13 +268,6 @@ struct ContentView: View {
         
         activity = nil
         
-        do {
-            try await changePushToken(lastPushToken: lastPushToken ?? "", newPushToken: "")
-        } catch {
-            print("Unable to remove push token, \(error.localizedDescription)")
-        }
-        
-        lastPushToken = nil
     }
 
     init() {
