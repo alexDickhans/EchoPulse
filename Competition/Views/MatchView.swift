@@ -20,6 +20,7 @@ struct MatchView: View {
         HStack {
             Group {
                 VStack {
+                    Spacer()
                     if let red2 = match.redAlliance.team2 {
                         Text(match.redAlliance.team1).underline(
                             isTeam(team: match.redAlliance.team1))
@@ -28,6 +29,7 @@ struct MatchView: View {
                         Text(match.redAlliance.team1).underline(
                             isTeam(team: match.redAlliance.team1))
                     }
+                    Spacer()
                 }.font(.system(size: 15)).frame(minWidth: 63)
 
                 if let score = match.redAlliance.score {
@@ -59,6 +61,7 @@ struct MatchView: View {
                 }
 
                 VStack {
+                    Spacer()
                     if let red2 = match.blueAlliance.team2 {
                         Group {
                             Text(match.blueAlliance.team1).underline(
@@ -69,6 +72,7 @@ struct MatchView: View {
                         Text(match.blueAlliance.team1).underline(
                             isTeam(team: match.blueAlliance.team1))
                     }
+                    Spacer()
                 }.font(.system(size: 15)).frame(minWidth: 63)
             }.foregroundStyle(Color.blue, Color.black)
         }.frame(maxWidth: .infinity)
@@ -134,7 +138,7 @@ struct MatchView: View {
             name: "R16 8-3",
             scheduled: Date().addingTimeInterval(-60 * 2), startTime: Date(),
             redAlliance: CompetitionAttributes.Alliance(
-                team1: "2654E", team2: "88888W", score: 22),
+                team1: "2654E", team2: nil, score: 22),
             blueAlliance: CompetitionAttributes.Alliance(
                 team1: "ABS", team2: "ABCD", score: 44)), longName: "Last Match"
     )

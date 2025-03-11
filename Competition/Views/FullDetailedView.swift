@@ -18,7 +18,7 @@ struct FullDetailedView: View {
                             MatchView(match: match, longName: "", teamName: teamName)
                         }
                     }
-        }.padding(EdgeInsets(top: 30, leading: 20, bottom: 30, trailing: 20))
+        }.padding(EdgeInsets(top: 30, leading: 5, bottom: 30, trailing: 5))
     }
 }
 

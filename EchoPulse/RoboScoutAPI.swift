@@ -873,6 +873,11 @@ public class Match: Identifiable {
         return true
     }
     
+    func sorting_score() -> Double {
+        let round_score = if self.round.rawValue == 6 || self.round.rawValue == 0 { 2.5 } else { Double(self.round.rawValue) }
+        return round_score * 1000.0 + Double(self.matchnum);
+    }
+    
     func toString() -> String {
         return "\(self.name) - \(self.red_score) to \(self.blue_score) (Prediction: \(self.predicted_red_score) to \(self.predicted_blue_score))"
     }
@@ -1555,6 +1560,26 @@ public class WorldSkills {
     }
 }
 
+public class Program: Identifiable, Hashable {
+    public var id: Int
+    public var name: String
+    public var code: String
+    
+    init(id: Int = 0, name: String = "", code: String = "", data: [String: Any] = [:]) {
+        self.id = (data["id"] != nil) ? data["id"] as? Int ?? id : id
+        self.name = (data["name"] != nil) ? data["name"] as? String ?? name : name
+        self.code = (data["code"] != nil) ? data["code"] as? String ?? code : code
+    }
+    
+    public static func == (lhs: Program, rhs: Program) -> Bool {
+        return ObjectIdentifier(lhs) == ObjectIdentifier(rhs)
+    }
+    
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(0)
+    }
+}
+
 public class Team: Identifiable, Hashable {
     
     public var id: Int
@@ -1570,8 +1595,11 @@ public class Team: Identifiable, Hashable {
     public var country: String
     public var grade: String
     public var registered: Bool
+    public var program: Program
     
-    public init(id: Int = 0, number: String = "", fetch: Bool = true, data: [String: Any] = [:]) {
+    public var multiplePrograms: [Program]? = nil
+    
+    public init(id: Int = 0, number: String = "", fetch: Bool = true, programId: Int? = nil, data: [String: Any] = [:]) {
         
         self.id = (data["id"] != nil) ? data["id"] as? Int ?? id : id
         self.events = (data["events"] != nil) ? data["events"] as? [Event] ?? [] : []
@@ -1586,22 +1614,36 @@ public class Team: Identifiable, Hashable {
         self.country = (data["location"] != nil) ? ((data["location"] as! [String: Any])["country"] as? String ?? "") : ""
         self.grade = (data["grade"] != nil) ? data["grade"] as? String ?? "" : ""
         self.registered = (data["registered"] != nil) ? data["registered"] as? Bool ?? false : false
+        self.program = (data["program"] != nil) ? data["program"] as? Program ?? Program(id: 0, name: "", code: "") : Program(id: 0, name: "", code: "")
         
         if fetch {
-            self.fetch_info()
+            self.fetch_info(programId: programId)
         }
     }
     
-    public func fetch_info() {
+    public func fetch_info(programId: Int?) {
         
         if self.id == 0 && self.number == "" {
             return
         }
         
-        let data = RoboScoutAPI.robotevents_request(request_url: "/teams", params: self.id != 0 ? ["id": self.id, "program": RoboScoutAPI.selected_program_id()] : ["number": self.number, "program": [1, 4]])
+        let data: [[String: Any]]
+        
+        if let id = programId {
+            data = RoboScoutAPI.robotevents_request(request_url: "/teams", params: self.id != 0 ? ["id": self.id, "program": id] : ["number": self.number, "program": id])
+        } else {
+            data = RoboScoutAPI.robotevents_request(request_url: "/teams", params: self.id != 0 ? ["id": self.id] : ["number": self.number])
+        }
         
         if data.isEmpty {
             return
+        }
+        
+        if data.count > 1 {
+            multiplePrograms = []
+            for team in data {
+                multiplePrograms?.append((team["program"] != nil) ? Program(data: team["program"] as! [String : Any]) : Program(id: 0, name: "", code: "You should never see this"))
+            }
         }
         
         self.id = data[0]["id"] as? Int ?? 0
@@ -1655,18 +1697,9 @@ public class Team: Identifiable, Hashable {
     
     public func fetch_events(season: Int? = nil) {
         
-        var season_id: Int
         let grade = (self.grade == "High School" || self.grade == "Middle School") ? "High School" : "College"
-        let selected_grade = (UserSettings.getGradeLevel() == "High School" || UserSettings.getGradeLevel() == "Middle School") ? "High School" : "College"
-        if grade != selected_grade {
-            season_id = API.season_id_map[grade == "High School" ? 0 : 1].keys[API.season_id_map[grade == "High School" ? 1 : 0].index(forKey: API.selected_season_id()) ?? 0]
-        }
-        else {
-            print("Using selected season id: \(API.selected_season_id())")
-            season_id = API.selected_season_id()
-        }
         
-        let data = RoboScoutAPI.robotevents_request(request_url: "/events", params: ["team": self.id, "season": season ?? season_id])
+        let data = RoboScoutAPI.robotevents_request(request_url: "/events", params: ["team": self.id])
         for event in data {
             self.events.append(Event(id: event["id"] as! Int, fetch: false, data: event))
         }

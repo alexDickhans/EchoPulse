@@ -48,6 +48,14 @@ struct LiveActivityStartDetails {
     let id = UUID()
 }
 
+struct TeamSelectionAlert {
+    let programs: [Program]
+}
+
+enum ResponseError: Error {
+    case wrongStatus
+}
+
 struct ContentView: View {
     @State var activity: Activity<CompetitionAttributes>?
     @State var matchList: [CompetitionAttributes.DisplayMatch]
@@ -62,6 +70,9 @@ struct ContentView: View {
     @State var startDetails: LiveActivityStartDetails = LiveActivityStartDetails(name: "Test", error: "testing");
     @Environment(\.scenePhase) private var scenePhase
     @State var lastUpdated: Date
+    @State var teamSelectionAlertDetails: TeamSelectionAlert = TeamSelectionAlert(programs: [Program(id: 0, name: "", code: "You should never see this")])
+    @State var teamSelectionError: Bool = false
+    @State var programId: Int? = nil
     
 
     var body: some View {
@@ -110,9 +121,21 @@ struct ContentView: View {
             
         } message: { details in
             Text(details.error)
+        }.alert(
+            alertTitle,
+            isPresented: $teamSelectionError,
+            presenting: teamSelectionAlertDetails
+        ) { details in
+            ForEach(teamSelectionAlertDetails.programs, id: \.self) { option in
+                Button(option.code) {
+                                print("\(option) selected")
+                    self.programId = option.id
+                    findCompetitions()
+                            }
+                        }
+        } message: { details in
         }.onChange(of: scenePhase) {
             Task {
-                print("appeared")
                 
                 let activities = Activity<CompetitionAttributes>.activities
                 
@@ -145,7 +168,7 @@ struct ContentView: View {
                     }) {
                         Text(competition.name)
                             .font(.headline)
-                            .foregroundColor(.orange)  // Text color to indicate action
+                            .foregroundColor(.blue)  // Text color to indicate action
                             .padding()
                             .frame(maxWidth: .infinity, alignment: .leading)  // Full width button
                     }
@@ -161,17 +184,30 @@ struct ContentView: View {
     }
 
     func findCompetitions() {
-        let fetched_team = Team(number: self.team.uppercased())
-
-        if fetched_team.registered {
-            let fetched_events = TeamEvents(team: fetched_team)
-
-            teamID = fetched_team.id
-
-            Task {
-                self.competitions = fetched_events
-            }
+        self.team = self.team.uppercased().replacingOccurrences(of: " ", with: "")
+        self.competitions = nil
+        let fetched_team = Team(number: self.team.uppercased(), programId: programId)
+        
+        print(fetched_team.name)
+        
+        if let programs = fetched_team.multiplePrograms {
+            self.showTeamError(teamSelectionAlertDetails: TeamSelectionAlert(programs: programs))
+            return
         }
+        
+        if fetched_team.id == 0 {
+            self.showError(alertTitle: "No team found with number: \(self.team)", startDetails: LiveActivityStartDetails(name: "", error: ""))
+        }
+        
+        let fetched_events = TeamEvents(team: fetched_team)
+
+        teamID = fetched_team.id
+
+        Task {
+            self.competitions = fetched_events
+        }
+        
+        self.programId = nil
     }
 
     func startActivity(event: Event) {
@@ -193,8 +229,6 @@ struct ContentView: View {
             self.showError(alertTitle: "Unable to find division for \(self.team.uppercased()), likely means the competition isn't started yet.", startDetails: LiveActivityStartDetails(name: "No division", error: ""))
             return
         }
-        
-    
         
         let attributes = CompetitionAttributes(
             name: event.name, eventId: event.id, divisionId: self.division!.id, teamName: team.uppercased())
@@ -229,13 +263,13 @@ struct ContentView: View {
                 Task {
                     for await event in activity!.activityStateUpdates {
                         switch event {
-                        case .ended:
+                        case .dismissed, .ended:
                             do {
                                 try await changePushToken(lastPushToken: lastPushToken!, newPushToken: "")
                                 print("sucessfully removed app push token")
                             } catch {
                                 print("unable to remove push token: \(error.localizedDescription)")
-                                self.showError(alertTitle: "Unable to remove push token, this live activity will not work, try again later.", startDetails: LiveActivityStartDetails(name: "No division", error: ""))
+                                self.showError(alertTitle: "Unable to unsubscribe from push notifications. \n This message can be safely ignored.", startDetails: LiveActivityStartDetails(name: "No division", error: ""))
                             }
                         default:
                             break
@@ -267,7 +301,14 @@ struct ContentView: View {
             
             let data = try encoder.encode(device)
                             
-            let _ = try await URLSession.shared.upload(for: urlRequest, from: data)
+            let (_, response) = try await URLSession.shared.upload(for: urlRequest, from: data)
+            
+            if let httpResponse = response as? HTTPURLResponse {
+                print (httpResponse.statusCode)
+                if httpResponse.statusCode != 201 {
+                    throw ResponseError.wrongStatus
+                }
+            }
             
             lastPushToken = pushTokenString
         }
@@ -290,13 +331,24 @@ struct ContentView: View {
                         
         let _ = try await URLSession.shared.upload(for: urlRequest, from: data)
         
+        let (_, response) = try await URLSession.shared.upload(for: urlRequest, from: data)
+        
+        if let httpResponse = response as? HTTPURLResponse {
+            print (httpResponse.statusCode)
+            if httpResponse.statusCode != 202 {
+                throw ResponseError.wrongStatus
+            }
+        }
+        
         self.lastPushToken = if newPushToken.isEmpty {nil} else { newPushToken }
     }
 
     func updateMatchList() async {
         self.event!.fetch_matches(division: self.division!)
 
-        let matches = self.event!.matches[self.division!]!
+        let matches = self.event!.matches[self.division!]!.sorted() { match1, match2 in
+            return match1.sorting_score() < match2.sorting_score()
+        }
 
         var fetched_matches: [CompetitionAttributes.DisplayMatch] = []
 
@@ -322,6 +374,15 @@ struct ContentView: View {
         activity = nil
         division = nil
         event = nil
+        
+        Task {
+            do {
+                try await self.changePushToken(lastPushToken: lastPushToken!, newPushToken: "")
+                lastPushToken = ""
+            } catch {
+                showError(alertTitle: "Unable to unsubscribe from push notifications. \n This message can be safely ignored.", startDetails: LiveActivityStartDetails(name: "", error: ""))
+            }
+        }
     }
     
     func showError(alertTitle: String, startDetails: LiveActivityStartDetails) {
@@ -329,6 +390,14 @@ struct ContentView: View {
         
         self.alertTitle = alertTitle
         self.startDetails = startDetails
+    }
+    
+    func showTeamError(teamSelectionAlertDetails: TeamSelectionAlert) {
+        print("multiple teams")
+        self.teamSelectionError = true
+        
+        self.alertTitle = "Pick a program code"
+        self.teamSelectionAlertDetails = teamSelectionAlertDetails
     }
 
     init() {

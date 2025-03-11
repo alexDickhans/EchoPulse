@@ -14,7 +14,7 @@ struct DetailedView: View {
     let teamNumber: String?
 
     var body: some View {
-        VStack (spacing: 6) {
+        VStack (spacing: 3) {
             if let match = lastMatch {
                 MatchView(match: match, longName: "Last Match", teamName: teamNumber)
             }
@@ -24,7 +24,7 @@ struct DetailedView: View {
             if let match = teamNextMatch {
                 MatchView(match: match, longName: "Next Up", teamName: teamNumber)
             }
-        }.padding(EdgeInsets(top: 10, leading: 20, bottom: 10, trailing: 20))
+        }.padding(EdgeInsets(top: 10, leading: 5, bottom: 10, trailing: 5))
     }
 }
 
