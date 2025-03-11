@@ -83,9 +83,9 @@ struct ContentView: View {
                 ) {
                     Color(.accent)
                         .frame(height: 100)  // Height of the top bar
-                    Text("Echo Pulse")
+                    Text("Pulse")
                         .foregroundColor(.white)  // Text color
-                        .padding().font(.system(size: 18, weight: .heavy))
+                        .padding().font(.system(size: 22, weight: .heavy))
                 }.edgesIgnoringSafeArea(.top)
                 ScrollView {
                     VStack {
@@ -103,9 +103,11 @@ struct ContentView: View {
                         } else {
                             TextField("2654E", text: $team).frame(
                                 alignment: .center
-                            ).multilineTextAlignment(.center).font(
+                            ).onSubmit {
+                                findCompetitions()
+                            }.multilineTextAlignment(.center).font(
                                 .system(size: 36))
-                            Button("Search") {
+                            Button(String(localized: "Search")) {
                                 findCompetitions()
                             }
                             buildCompetitionsList().buttonStyle(.borderless)

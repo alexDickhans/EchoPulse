@@ -1,0 +1,87 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "-" : {
+
+    },
+    "2654E" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "2654E"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "2654E"
+          }
+        }
+      }
+    },
+    "Last Match" : {
+      "comment" : "This refers to the RECF match that is the last one that has ran through",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Last Match"
+          }
+        }
+      }
+    },
+    "Pulse" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pulse"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pulse"
+          }
+        }
+      }
+    },
+    "Search" : {
+      "comment" : "Specifically for searching for events",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Search"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Búsqueda"
+          }
+        }
+      }
+    },
+    "Stop Activity" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stop Activity"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Detener la Actividad"
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}
