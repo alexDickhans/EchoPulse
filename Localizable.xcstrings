@@ -20,6 +20,17 @@
         }
       }
     },
+    "as_team" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "As team: %@"
+          }
+        }
+      }
+    },
     "Last Match" : {
       "comment" : "This refers to the RECF match that is the last one that has ran through",
       "extractionState" : "manual",
@@ -32,21 +43,30 @@
         }
       }
     },
-    "Pulse" : {
+    "no_activity" : {
+      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Pulse"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Pulse"
+            "value" : "No Activity Selected"
           }
         }
       }
+    },
+    "now_subscribed" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Now Subscribed to team %@ at "
+          }
+        }
+      }
+    },
+    "RECF Pulse" : {
+
     },
     "Search" : {
       "comment" : "Specifically for searching for events",
@@ -81,6 +101,9 @@
           }
         }
       }
+    },
+    "unknown_team" : {
+      "comment" : "Unknown team"
     }
   },
   "version" : "1.0"

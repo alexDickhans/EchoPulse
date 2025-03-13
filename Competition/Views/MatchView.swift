@@ -34,7 +34,7 @@ struct MatchView: View {
 
                 if let score = match.redAlliance.score {
                     Text(score.codingKey.stringValue).font(.system(size: 25))
-                        .underline(winner == Winner.red)
+                        .underline(winner == Winner.red).frame(minWidth: 12 * 2)
                 } else {
                     Text("-").font(.system(size: 25)).underline(
                         winner == Winner.red)
@@ -43,7 +43,7 @@ struct MatchView: View {
             Spacer()
             VStack(spacing: -6) {
                 Text(longName).font(.system(size: 12))
-                Text(match.name).font(.system(size: 35, weight: .bold)).minimumScaleFactor(0.5)
+                Text(match.name).font(.system(size: 27, weight: .bold)).minimumScaleFactor(0.5)
 
                 HStack {
                     Text(timeText)
@@ -54,7 +54,7 @@ struct MatchView: View {
             Group {
                 if let score = match.blueAlliance.score {
                     Text(score.codingKey.stringValue).font(.system(size: 25))
-                        .underline(winner == Winner.blue)
+                        .underline(winner == Winner.blue).frame(minWidth: 12 * 2)
                 } else {
                     Text("-").font(.system(size: 25)).underline(
                         winner == Winner.red)

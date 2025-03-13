@@ -76,46 +76,56 @@ struct ContentView: View {
     
 
     var body: some View {
-        VStack {
-            VStack {
-                ZStack(
-                    alignment: Alignment(horizontal: .center, vertical: .bottom)
-                ) {
-                    Color(.accent)
-                        .frame(height: 100)  // Height of the top bar
-                    Text("Pulse")
-                        .foregroundColor(.white)  // Text color
-                        .padding().font(.system(size: 22, weight: .heavy))
-                }.edgesIgnoringSafeArea(.top)
-                ScrollView {
-                    VStack {
-                        if activity != nil {
-                            Button("Stop Activity") {
-                                Task {
-                                    await stopActivity()
-                                }
+        VStack (spacing: 0.0) {
+            ZStack(
+                alignment: Alignment(horizontal: .center, vertical: .bottom)
+            ) {
+                Color(.accent)
+                    .frame(height: 110).edgesIgnoringSafeArea(.top)  // Height of the top bar
+                Text("RECF Pulse")
+                    .foregroundColor(.white)  // Text color
+                    .padding().font(.system(size: 22, weight: .heavy))
+            }.padding(0.0)
+            ScrollView {
+                VStack {
+                    Spacer()
+                    if activity != nil {
+                        Button(NSLocalizedString("Stop Activity", comment: "")) {
+                            Task {
+                                await stopActivity()
                             }
-                            Text(
-                                activity?.attributes.name
-                                    ?? "No activity selected")
-                            FullDetailedView(
-                                matches: matchList, teamName: team.uppercased())
-                        } else {
-                            TextField("2654E", text: $team).frame(
-                                alignment: .center
-                            ).onSubmit {
-                                findCompetitions()
-                            }.multilineTextAlignment(.center).font(
-                                .system(size: 36))
-                            Button(String(localized: "Search")) {
-                                findCompetitions()
-                            }
-                            buildCompetitionsList().buttonStyle(.borderless)
                         }
-                    }.buttonStyle(.borderedProminent).controlSize(.large)
-                }
-            }.edgesIgnoringSafeArea(.top)
-        }.alert(
+                        VStack(alignment: .leading, spacing: 4) {
+                            Text(String(format: NSLocalizedString("as_team", comment: "As team: %@"), activity?.attributes.teamName ?? NSLocalizedString("unknown_team", comment: "Unknown team")))
+                                .font(.headline)
+                                .foregroundColor(.primary)
+                            
+                            Button(activity?.attributes.name ?? NSLocalizedString("no_activity", comment: "No activity selected")) {
+                                if let url = URL(string: "https://www.robotevents.com/") {
+                                    UIApplication.shared.open(url)
+                                }
+                            }.font(.title2)
+                                .fontWeight(.semibold)
+                                .foregroundColor(.blue).buttonStyle(.bordered)
+                        }
+                        
+                        FullDetailedView(
+                            matches: matchList, teamName: team.uppercased())
+                    } else {
+                        TextField("2654E", text: $team).frame(
+                            alignment: .center
+                        ).onSubmit {
+                            findCompetitions()
+                        }.multilineTextAlignment(.center).font(
+                            .system(size: 36))
+                        Button(String(localized: "Search")) {
+                            findCompetitions()
+                        }
+                        buildCompetitionsList().buttonStyle(.borderless)
+                    }
+                }.buttonStyle(.borderedProminent).controlSize(.large)
+            }
+        }.edgesIgnoringSafeArea(.top).alert(
             alertTitle,
             isPresented: $didError,
             presenting: startDetails
@@ -317,7 +327,8 @@ struct ContentView: View {
     }
     
     func changePushToken(lastPushToken: String, newPushToken: String) async throws {
-        let url = URL(string: "https://echoscopebackend.fly.dev" + "/v1/change")
+        print("Changing push token to \(newPushToken), from \(lastPushToken)")
+        let url = URL(string: "http://echoscopebackend.fly.dev" + "/v1/change")
                         
         var urlRequest = URLRequest(url: url!)
         
@@ -335,6 +346,8 @@ struct ContentView: View {
         
         let (_, response) = try await URLSession.shared.upload(for: urlRequest, from: data)
         
+        self.lastPushToken = if newPushToken.isEmpty {nil} else { newPushToken }
+        
         if let httpResponse = response as? HTTPURLResponse {
             print (httpResponse.statusCode)
             if httpResponse.statusCode != 202 {
@@ -342,7 +355,6 @@ struct ContentView: View {
             }
         }
         
-        self.lastPushToken = if newPushToken.isEmpty {nil} else { newPushToken }
     }
 
     func updateMatchList() async {
@@ -376,15 +388,6 @@ struct ContentView: View {
         activity = nil
         division = nil
         event = nil
-        
-        Task {
-            do {
-                try await self.changePushToken(lastPushToken: lastPushToken!, newPushToken: "")
-                lastPushToken = ""
-            } catch {
-                showError(alertTitle: "Unable to unsubscribe from push notifications. \n This message can be safely ignored.", startDetails: LiveActivityStartDetails(name: "", error: ""))
-            }
-        }
     }
     
     func showError(alertTitle: String, startDetails: LiveActivityStartDetails) {

@@ -14,17 +14,19 @@ struct DetailedView: View {
     let teamNumber: String?
 
     var body: some View {
-        VStack (spacing: 3) {
+        VStack (spacing: -2) {
             if let match = lastMatch {
                 MatchView(match: match, longName: "Last Match", teamName: teamNumber)
             }
             if let match = nextMatch {
-                MatchView(match: match, longName: "Next Match", teamName: teamNumber)
+                if match.name != teamNextMatch?.name {
+                    MatchView(match: match, longName: "Next Match", teamName: teamNumber)
+                }
             }
             if let match = teamNextMatch {
                 MatchView(match: match, longName: "Next Up", teamName: teamNumber)
             }
-        }.padding(EdgeInsets(top: 10, leading: 5, bottom: 10, trailing: 5))
+        }.padding(EdgeInsets(top: 6, leading: 7, bottom: 6, trailing: 7))
     }
 }
 
@@ -45,10 +47,10 @@ struct DetailedView: View {
             blueAlliance: CompetitionAttributes.Alliance(
                 team1: "ABS", team2: "ABCD", score: nil)),
         teamNextMatch: CompetitionAttributes.DisplayMatch(
-            name: "Q4",
+            name: "Q3",
             scheduled: Date().addingTimeInterval(-60 * 2), startTime: Date(),
             redAlliance: CompetitionAttributes.Alliance(
-                team1: "2654E", team2: "2145Z", score: nil),
+                team1: "2654E", team2: "2145Z", score: 20),
             blueAlliance: CompetitionAttributes.Alliance(
-                team1: "ABS", team2: "ABCD", score: nil)), teamNumber: "2654E")
+                team1: "ABS", team2: "ABCD", score: 2)), teamNumber: "2654E")
 }
