@@ -7,7 +7,7 @@
 
 import UIKit
 
-class AppDelegate: NSObject, UIApplicationDelegate {
+class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
         
         URLSession.shared.configuration.tlsMinimumSupportedProtocolVersion = .TLSv12
@@ -19,9 +19,18 @@ class AppDelegate: NSObject, UIApplicationDelegate {
             }
         }
         
+        UNUserNotificationCenter.current().delegate = self
+        
         return true
     }
-//    
+    
+    func userNotificationCenter(_ center: UNUserNotificationCenter,
+                               willPresent notification: UNNotification,
+                               withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        print("push notification recieved")
+        completionHandler([.banner, .sound])
+    }
+
 //    func application(
 //        _ application: UIApplication,
 //        didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data
