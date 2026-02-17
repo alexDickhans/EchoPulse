@@ -421,7 +421,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_ASSET_PATHS = "\"EchoPulse/Preview Content\"";
-				DEVELOPMENT_TEAM = NA9G8MDBHJ;
+				DEVELOPMENT_TEAM = ARZ392GL4M;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = EchoPulse/Info.plist;
@@ -438,7 +438,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.1;
-				PRODUCT_BUNDLE_IDENTIFIER = net.dickhans.EchoPulse;
+				PRODUCT_BUNDLE_IDENTIFIER = org.robostem.EchoPulse;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -455,7 +455,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_ASSET_PATHS = "\"EchoPulse/Preview Content\"";
-				DEVELOPMENT_TEAM = NA9G8MDBHJ;
+				DEVELOPMENT_TEAM = ARZ392GL4M;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = EchoPulse/Info.plist;
@@ -472,7 +472,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.1;
-				PRODUCT_BUNDLE_IDENTIFIER = net.dickhans.EchoPulse;
+				PRODUCT_BUNDLE_IDENTIFIER = org.robostem.EchoPulse;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -488,18 +488,19 @@
 				CODE_SIGN_ENTITLEMENTS = CompetitionExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = NA9G8MDBHJ;
+				DEVELOPMENT_TEAM = ARZ392GL4M;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Competition/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Competition;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_KEY_NSSupportsLiveActivities = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = net.dickhans.EchoPulse.Competition;
+				PRODUCT_BUNDLE_IDENTIFIER = org.robostem.EchoPulse.Competition;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -516,18 +517,19 @@
 				CODE_SIGN_ENTITLEMENTS = CompetitionExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = NA9G8MDBHJ;
+				DEVELOPMENT_TEAM = ARZ392GL4M;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Competition/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Competition;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_KEY_NSSupportsLiveActivities = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = net.dickhans.EchoPulse.Competition;
+				PRODUCT_BUNDLE_IDENTIFIER = org.robostem.EchoPulse.Competition;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;

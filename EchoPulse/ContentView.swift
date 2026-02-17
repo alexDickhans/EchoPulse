@@ -83,7 +83,7 @@ struct ContentView: View {
                 ) {
                     Color(.accent)
                         .frame(height: 100)  // Height of the top bar
-                    Text("Echo Pulse")
+                    Text("MatchPulse")
                         .foregroundColor(.white)  // Text color
                         .padding().font(.system(size: 18, weight: .heavy))
                 }.edgesIgnoringSafeArea(.top)
@@ -113,6 +113,10 @@ struct ContentView: View {
                     }.buttonStyle(.borderedProminent).controlSize(.large)
                 }
             }.edgesIgnoringSafeArea(.top)
+            Text("Developed by Alex Dickhans")
+                .font(.caption)
+                .foregroundColor(.gray)
+                .padding(.bottom, 5)
         }.alert(
             alertTitle,
             isPresented: $didError,
