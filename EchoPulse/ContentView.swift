@@ -291,8 +291,9 @@ struct ContentView: View {
         if let last = lastPushToken {
             try await self.changePushToken(lastPushToken: last, newPushToken: pushTokenString)
         } else {
-            let url = URL(string: "https://echoscopebackend.fly.dev" + "/v1/subscribe")
-                            
+            let url = URL(string: "https://echoscopebackend.onrender.com" + "/v1/subscribe")
+            print("Request URL:", url!)
+            
             var urlRequest = URLRequest(url: url!)
             
             urlRequest.httpMethod = "POST"
@@ -319,7 +320,8 @@ struct ContentView: View {
     }
     
     func changePushToken(lastPushToken: String, newPushToken: String) async throws {
-        let url = URL(string: "https://echoscopebackend.fly.dev" + "/v1/change")
+        let url = URL(string: "https://echoscopebackend.onrender.com" + "/v1/change")
+        print("Request URL:", url!)
                         
         var urlRequest = URLRequest(url: url!)
         
