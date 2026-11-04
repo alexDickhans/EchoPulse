@@ -1,0 +1,17 @@
+.DS_Store
+
+# Xcode
+xcuserdata/
+*.xcuserstate
+DerivedData/
+build/
+*.xcscmblueprint
+*.xccheckout
+
+# Local secrets. Copy Config.plist.example to EchoPulse/Config.plist.
+EchoPulse/Config.plist
+.env
+.env.*
+*.mobileprovision
+*.p12
+*.cer

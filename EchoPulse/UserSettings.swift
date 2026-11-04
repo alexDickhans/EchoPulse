@@ -174,18 +174,24 @@ class UserSettings: ObservableObject {
     }
     
     static func getRobotEventsAPIKey() -> String? {
-        var robotevents_api_key: String? {
-            if let environmentAPIKey = ProcessInfo.processInfo.environment["ROBOTEVENTS_API_KEY"] {
-                defaults.set(environmentAPIKey, forKey: "robotevents_api_key")
-                return environmentAPIKey
-            } else if let defaultsAPIKey = defaults.object(forKey: "robotevents_api_key") as? String, !defaultsAPIKey.isEmpty {
-                return defaultsAPIKey
-            } else if let path = Bundle.main.path(forResource: "Config", ofType: "plist"), let config = NSDictionary(contentsOfFile: path) as? [String: Any] {
-                return config["key\(self.keyIndex)"] as? String
-            }
-            return nil
+        if let environmentAPIKey = ProcessInfo.processInfo.environment["ROBOTEVENTS_API_KEY"], !environmentAPIKey.isEmpty {
+            defaults.set(environmentAPIKey, forKey: "robotevents_api_key")
+            return environmentAPIKey
         }
-        return robotevents_api_key
+        if let defaultsAPIKey = defaults.object(forKey: "robotevents_api_key") as? String, !defaultsAPIKey.isEmpty {
+            return defaultsAPIKey
+        }
+        if let path = Bundle.main.path(forResource: "Config", ofType: "plist"),
+           let config = NSDictionary(contentsOfFile: path) as? [String: Any] {
+            let indexed = config["key\(keyIndex)"] as? String
+            if let indexed, !indexed.isEmpty {
+                return indexed
+            }
+            if let single = config["ROBOTEVENTS_API_KEY"] as? String, !single.isEmpty {
+                return single
+            }
+        }
+        return nil
     }
     
     static func getMinimalistic() -> Bool {
